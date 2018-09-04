@@ -13,7 +13,7 @@
 		856712D6213E07BD00CCFE50 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 856712D4213E07BD00CCFE50 /* LaunchScreen.storyboard */; };
 		85954899213E40FC00E2CFCE /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 85954898213E40FC00E2CFCE /* GoogleService-Info.plist */; };
 		8595489C213E9A0C00E2CFCE /* IndexViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8595489B213E9A0C00E2CFCE /* IndexViewController.swift */; };
-		8595489E213EAF0D00E2CFCE /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8595489D213EAF0D00E2CFCE /* SignInViewController.swift */; };
+		8595489E213EAF0D00E2CFCE /* SignupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8595489D213EAF0D00E2CFCE /* SignupViewController.swift */; };
 		859548A0213EAF1B00E2CFCE /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8595489F213EAF1B00E2CFCE /* LoginViewController.swift */; };
 		859548A2213EAF2B00E2CFCE /* ChatRoomViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 859548A1213EAF2B00E2CFCE /* ChatRoomViewController.swift */; };
 		859548A4213EB62300E2CFCE /* Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 859548A3213EB62300E2CFCE /* Extension.swift */; };
@@ -30,7 +30,7 @@
 		856712D7213E07BD00CCFE50 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		85954898213E40FC00E2CFCE /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		8595489B213E9A0C00E2CFCE /* IndexViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndexViewController.swift; sourceTree = "<group>"; };
-		8595489D213EAF0D00E2CFCE /* SignInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewController.swift; sourceTree = "<group>"; };
+		8595489D213EAF0D00E2CFCE /* SignupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupViewController.swift; sourceTree = "<group>"; };
 		8595489F213EAF1B00E2CFCE /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		859548A1213EAF2B00E2CFCE /* ChatRoomViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRoomViewController.swift; sourceTree = "<group>"; };
 		859548A3213EB62300E2CFCE /* Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extension.swift; sourceTree = "<group>"; };
@@ -92,7 +92,7 @@
 				856712D7213E07BD00CCFE50 /* Info.plist */,
 				85954898213E40FC00E2CFCE /* GoogleService-Info.plist */,
 				8595489B213E9A0C00E2CFCE /* IndexViewController.swift */,
-				8595489D213EAF0D00E2CFCE /* SignInViewController.swift */,
+				8595489D213EAF0D00E2CFCE /* SignupViewController.swift */,
 				8595489F213EAF1B00E2CFCE /* LoginViewController.swift */,
 				859548A1213EAF2B00E2CFCE /* ChatRoomViewController.swift */,
 				859548A3213EB62300E2CFCE /* Extension.swift */,
@@ -239,7 +239,7 @@
 				859548A2213EAF2B00E2CFCE /* ChatRoomViewController.swift in Sources */,
 				859548A4213EB62300E2CFCE /* Extension.swift in Sources */,
 				8595489C213E9A0C00E2CFCE /* IndexViewController.swift in Sources */,
-				8595489E213EAF0D00E2CFCE /* SignInViewController.swift in Sources */,
+				8595489E213EAF0D00E2CFCE /* SignupViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

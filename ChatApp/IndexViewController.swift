@@ -23,7 +23,7 @@ class IndexViewController: UIViewController {
         button.setBackgroundImage(UIImage(named: "green_btn_dark"), for: .normal)
         button.setTitle("Sign up", for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.addTarget(self, action: #selector(presentSigninVC), for: .touchUpInside)
+        button.addTarget(self, action: #selector(presentSignupVC), for: .touchUpInside)
         return button
     }()
     
@@ -74,8 +74,8 @@ class IndexViewController: UIViewController {
         loginBtn.widthAnchor.constraint(equalTo: signupBtn.widthAnchor).isActive = true
     }
     
-    @objc func presentSigninVC(){
-        self.present(SignInViewController(), animated: true, completion: nil)
+    @objc func presentSignupVC(){
+        self.present(SignupViewController(), animated: true, completion: nil)
     }
     
     @objc func presentLoginVC(){
