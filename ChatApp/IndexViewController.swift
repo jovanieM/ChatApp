@@ -48,15 +48,26 @@ class IndexViewController: UIViewController {
         setupSignupBtn()
         setupLoginBtn()
         
+        print("signupbuttonFrame \(signupBtn.frame)")
+        print("signupbuttonFrame \(signupBtn.bounds)")
+        
+        
         // Do any additional setup after loading the view.
     }
 
     func setupAppLogo(){
         //need x, y, width, height
-        let width: CGFloat = view.bounds.width * ( 246 / 640)
-        appLogo.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        appLogo.topAnchor.constraint(equalTo: view.topAnchor, constant: 276 * (568 / 1136)).isActive = true
-        appLogo.widthAnchor.constraint(equalToConstant: width).isActive = true
+        let _width: CGFloat = view.bounds.width * ( 246 / 640)
+        
+        appLogo.anchor(top: view.topAnchor,
+                       leading: nil,
+                       bottom: nil,
+                       trailing: nil,
+                       centerX: view.centerXAnchor,
+                       centerY: nil,
+                       padding: .init(top: 276 * (568 / 1136), left: 0, bottom: 0, right: 0),
+                       size: CGSize.init(width: _width, height: 0))
+    
     }
 
     func setupSignupBtn() {
@@ -75,11 +86,14 @@ class IndexViewController: UIViewController {
     }
     
     @objc func presentSignupVC(){
-        self.present(SignupViewController(), animated: true, completion: nil)
+        let signUpVC = SignupViewController()
+        self.show(signUpVC, sender: self)
     }
     
     @objc func presentLoginVC(){
-        self.present(LoginViewController(), animated: true, completion: nil)
+        let loginVC = LoginViewController()
+        self.show(loginVC, sender: self)
     }
+    
 }
 

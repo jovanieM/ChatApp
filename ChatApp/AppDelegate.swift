@@ -23,9 +23,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window?.rootViewController = IndexViewController()
         
         FirebaseApp.configure()
-        
-        
-        
+
         return true
     }
 

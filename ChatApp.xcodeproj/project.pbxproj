@@ -8,9 +8,14 @@
 
 /* Begin PBXBuildFile section */
 		7884915D333A8EE4CAA9C221 /* Pods_ChatApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6780192A0CA06BA7ABE23F14 /* Pods_ChatApp.framework */; };
+		853D3A942142188C00C3C5CC /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 853D3A932142188C00C3C5CC /* Message.swift */; };
+		853D3A962142193600C3C5CC /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 853D3A952142193600C3C5CC /* User.swift */; };
+		853D3A98214256CC00C3C5CC /* CurrentUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 853D3A97214256CC00C3C5CC /* CurrentUser.swift */; };
+		854E2308214005B600E26B6B /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 854E230A214005B600E26B6B /* Localizable.strings */; };
 		856712CC213E07B900CCFE50 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 856712CB213E07B900CCFE50 /* AppDelegate.swift */; };
 		856712D3213E07BD00CCFE50 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 856712D2213E07BD00CCFE50 /* Assets.xcassets */; };
 		856712D6213E07BD00CCFE50 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 856712D4213E07BD00CCFE50 /* LaunchScreen.storyboard */; };
+		857B184E21436976002802E4 /* MessagesViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 857B184D21436976002802E4 /* MessagesViewCell.swift */; };
 		85954899213E40FC00E2CFCE /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 85954898213E40FC00E2CFCE /* GoogleService-Info.plist */; };
 		8595489C213E9A0C00E2CFCE /* IndexViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8595489B213E9A0C00E2CFCE /* IndexViewController.swift */; };
 		8595489E213EAF0D00E2CFCE /* SignupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8595489D213EAF0D00E2CFCE /* SignupViewController.swift */; };
@@ -23,11 +28,17 @@
 		6780192A0CA06BA7ABE23F14 /* Pods_ChatApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ChatApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		73A7656B4B247D7585FC4D11 /* Pods-ChatApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ChatApp.release.xcconfig"; path = "Pods/Target Support Files/Pods-ChatApp/Pods-ChatApp.release.xcconfig"; sourceTree = "<group>"; };
 		81D3B1A2119CCBCC8DF82C2B /* Pods-ChatApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ChatApp.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ChatApp/Pods-ChatApp.debug.xcconfig"; sourceTree = "<group>"; };
+		853D3A932142188C00C3C5CC /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
+		853D3A952142193600C3C5CC /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		853D3A97214256CC00C3C5CC /* CurrentUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentUser.swift; sourceTree = "<group>"; };
+		854E2309214005B600E26B6B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		854E230B214005F400E26B6B /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; };
 		856712C8213E07B900CCFE50 /* ChatApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ChatApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		856712CB213E07B900CCFE50 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		856712D2213E07BD00CCFE50 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		856712D5213E07BD00CCFE50 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		856712D7213E07BD00CCFE50 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		857B184D21436976002802E4 /* MessagesViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesViewCell.swift; sourceTree = "<group>"; };
 		85954898213E40FC00E2CFCE /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		8595489B213E9A0C00E2CFCE /* IndexViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndexViewController.swift; sourceTree = "<group>"; };
 		8595489D213EAF0D00E2CFCE /* SignupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupViewController.swift; sourceTree = "<group>"; };
@@ -96,6 +107,11 @@
 				8595489F213EAF1B00E2CFCE /* LoginViewController.swift */,
 				859548A1213EAF2B00E2CFCE /* ChatRoomViewController.swift */,
 				859548A3213EB62300E2CFCE /* Extension.swift */,
+				854E230A214005B600E26B6B /* Localizable.strings */,
+				853D3A932142188C00C3C5CC /* Message.swift */,
+				853D3A952142193600C3C5CC /* User.swift */,
+				853D3A97214256CC00C3C5CC /* CurrentUser.swift */,
+				857B184D21436976002802E4 /* MessagesViewCell.swift */,
 			);
 			path = ChatApp;
 			sourceTree = "<group>";
@@ -162,6 +178,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				856712D6213E07BD00CCFE50 /* LaunchScreen.storyboard in Resources */,
+				854E2308214005B600E26B6B /* Localizable.strings in Resources */,
 				85954899213E40FC00E2CFCE /* GoogleService-Info.plist in Resources */,
 				856712D3213E07BD00CCFE50 /* Assets.xcassets in Resources */,
 			);
@@ -236,16 +253,29 @@
 			files = (
 				859548A0213EAF1B00E2CFCE /* LoginViewController.swift in Sources */,
 				856712CC213E07B900CCFE50 /* AppDelegate.swift in Sources */,
+				857B184E21436976002802E4 /* MessagesViewCell.swift in Sources */,
 				859548A2213EAF2B00E2CFCE /* ChatRoomViewController.swift in Sources */,
 				859548A4213EB62300E2CFCE /* Extension.swift in Sources */,
+				853D3A962142193600C3C5CC /* User.swift in Sources */,
 				8595489C213E9A0C00E2CFCE /* IndexViewController.swift in Sources */,
 				8595489E213EAF0D00E2CFCE /* SignupViewController.swift in Sources */,
+				853D3A98214256CC00C3C5CC /* CurrentUser.swift in Sources */,
+				853D3A942142188C00C3C5CC /* Message.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
+		854E230A214005B600E26B6B /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				854E2309214005B600E26B6B /* en */,
+				854E230B214005F400E26B6B /* Base */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
 		856712D4213E07BD00CCFE50 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -261,6 +291,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -321,6 +352,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -377,7 +409,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = CUBQ388SRP;
+				DEVELOPMENT_TEAM = 5GFTBY65QD;
 				INFOPLIST_FILE = ChatApp/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.1;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -397,7 +429,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = CUBQ388SRP;
+				DEVELOPMENT_TEAM = 5GFTBY65QD;
 				INFOPLIST_FILE = ChatApp/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.1;
 				LD_RUNPATH_SEARCH_PATHS = (
