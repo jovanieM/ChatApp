@@ -10,7 +10,15 @@ import UIKit
 import FirebaseDatabase
 import Firebase
 
+enum LoginSignUpError: Error{
+    case IncompleteForm
+    case IncorrectInputLength
+    case IncorrectNameOrPassword
+}
+
 class SignupViewController: UIViewController, UITextFieldDelegate {
+    
+    let ACCEPTABLE_CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_"
     
     lazy var userTextField: UITextField = {
         let textField = UITextField()
@@ -44,8 +52,7 @@ class SignupViewController: UIViewController, UITextFieldDelegate {
     
     let loginLnk: UIButton = {
         let button = UIButton(type: UIButtonType.custom)
-        button.backgroundColor = .red
-        let title: NSAttributedString = String("Login").getUnderlinedAttributedText()
+        let title: NSAttributedString = NSAttributedString(string: "Login")
         button.setAttributedTitle(title, for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.addTarget(self, action: #selector(presentLoginVC), for: .touchUpInside)
@@ -54,7 +61,7 @@ class SignupViewController: UIViewController, UITextFieldDelegate {
     
     let userAgreementLabel: UILabel = {
         let label: UILabel = UILabel()
-        label.backgroundColor = UIColor.lightGray
+        //label.backgroundColor = UIColor.lightGray
         label.numberOfLines = 0
         label.font = UIFont.systemFont(ofSize: 15)
         let s  = NSLocalizedString("userAgreement", comment: "")
@@ -154,20 +161,124 @@ class SignupViewController: UIViewController, UITextFieldDelegate {
     
     @objc func presentChatRoomVC(){
         
+        do {
+            try signUP(username: userTextField.text!, password: passwordTextField.text!)
+        } catch LoginSignUpError.IncompleteForm {
+            print("1")
+        } catch LoginSignUpError.IncorrectInputLength {
+            print("2")
+        } catch LoginSignUpError.IncorrectNameOrPassword {
+            print("3")
+        } catch {
+            print("Unknown error")
+        }
+        
+//        let userInputStringCount: Int = userTextField.text!.trimmingCharacters(in: .whitespacesAndNewlines).count
+//        let passwordInputStringCount: Int = passwordTextField.text!.trimmingCharacters(in: .whitespacesAndNewlines).count
+//        
+//        if (userInputStringCount == 0 || passwordInputStringCount == 0){
+//            print("return error")
+//        } else if((userInputStringCount < 8 || userInputStringCount > 16) ||
+//            (passwordInputStringCount < 8 || passwordInputStringCount > 16)){
+//            print("min/max value violation")
+//        }else{
+//            print("wrong pass/user")
+//        }
+        
 //        let values = ["username": userTextField.text!, "password": passwordTextField.text!]
 //
 //        let ref = Database.database().reference().child("users")
 //        let childRef = ref.childByAutoId()
 //        childRef.updateChildValues(values) { (err, ref) in
-//            if err != nil {
+//            if err != nil  {
 //                print("molas \(err.debugDescription)")
 //            }else{
 //                print("molas err \(ref.key)")
 //            }
 //
 //        }
-        let navVC = UINavigationController(rootViewController: ChatRoomViewController(collectionViewLayout: UICollectionViewFlowLayout()))
-        present(navVC, animated: true, completion: nil)
+//        let navVC = UINavigationController(rootViewController: ChatRoomViewController(collectionViewLayout: UICollectionViewFlowLayout()))
+//        present(navVC, animated: true, completion: nil)
+    }
+    
+    func signUP(username : String, password: String) throws {
+        
+        
+        let username: String = userTextField.text!.trimmingCharacters(in: .whitespacesAndNewlines)
+        let password: String = passwordTextField.text!.trimmingCharacters(in: .whitespacesAndNewlines)
+        
+        if (username.count == 0 || password.count == 0){
+            print("return error")
+            throw LoginSignUpError.IncompleteForm
+        }
+        if((username.count < 8 || username.count > 16) || (password.count < 8 || password.count > 16)){
+            print("min/max value violation")
+            throw LoginSignUpError.IncorrectInputLength
+        }
+        
+        
+        if username.count == 100{
+            throw LoginSignUpError.IncorrectNameOrPassword
+        }
+        
+        signUpNewUser(withName: username) { (isAvailble) in
+            //
+        }
+       
+        print("no error detected")
+        
+    }
+    
+    func signUpNewUser(withName: String, completion: @escaping (_ isAvailable: Bool) -> ()){
+    
+        let ref = Database.database().reference().child("users")
+    
+        ref.observe(.childAdded) { (snapshot) in
+            if let dictionary = snapshot.value as? [String: String] {
+                print("username is \(dictionary.debugDescription)")
+            
+                let username: String = dictionary["username"]!
+                completion(withName != username)
+            }
+        }
+//        ref.observeSingleEvent(of: .childAdded, with: { (snapshot) in
+//
+//            if let dictionary = snapshot.value as? [String: String] {
+//                print("username is \(dictionary.debugDescription)")
+//
+//
+//            }
+//        }) { (error) in
+//            print("error \(error)")
+//
+//        }
+        
+        
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        if textField.isEditing{
+            textField.endEditing(true)
+        }
+        return true
+    }
+    
+    
+    
+    func checkforSpecialCharacters(text: String) -> Bool {
+        let regex = try? NSRegularExpression(pattern: "#[a-z0-9]+", options: .caseInsensitive)
+        regex?.matches(in: text, options: [], range: NSRange(location: 0, length: text.count))
+        return false
+    }
+    
+    // text field delegate
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+//        if (userTextField.isEditing){
+//            let charSet = NSCharacterSet(charactersIn: ACCEPTABLE_CHARACTERS).inverted
+//            let filtered = string.components(separatedBy: charSet).joined(separator: "")
+//            return (string == filtered)
+//        }
+        return true
     }
     
 }

@@ -43,8 +43,8 @@ class LoginViewController: UIViewController {
     let loginLnk: UIButton = {
         let button = UIButton(type: UIButtonType.custom)
         button.backgroundColor = .red
-        let title: NSAttributedString = String("Sign up").getUnderlinedAttributedText()
-        button.setAttributedTitle(title, for: .normal)
+
+        button.setTitle("Login", for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.addTarget(self, action: #selector(presentSignupVC), for: .touchUpInside)
         return button

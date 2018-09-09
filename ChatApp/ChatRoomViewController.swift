@@ -14,12 +14,12 @@ class ChatRoomViewController: UICollectionViewController, UICollectionViewDelega
     
    
     
-//    let containerView:UIView = {
-//        let uiView: UIView = UIView()
-//        uiView.backgroundColor = .red
-//        uiView.translatesAutoresizingMaskIntoConstraints = false
-//        return uiView
-//    }()
+    let containerView:UIView = {
+        let uiView: UIView = UIView()
+        uiView.backgroundColor = .white
+        uiView.translatesAutoresizingMaskIntoConstraints = false
+        return uiView
+    }()
     
     var user: User? {
         didSet{
@@ -48,35 +48,111 @@ class ChatRoomViewController: UICollectionViewController, UICollectionViewDelega
     }()
     
 
+    let passwordTextField: UITextField = {
+        let textField = UITextField()
+        textField.placeholder = "password"
+        textField.background = UIImage(named: "textfield_bg")
+        textField.setLeftPaddingPoints(10)
+        textField.isSecureTextEntry = true
+        textField.translatesAutoresizingMaskIntoConstraints = false
+        return textField
+    }()
+    
+    let safeAreaInsetCoverView: UIView = {
+        let uiView = UIView()
+        uiView.backgroundColor = .blue
+        uiView.translatesAutoresizingMaskIntoConstraints = false
+        return uiView
+    }()
     
     let cellId = "cellId"
+    
+    lazy var bottomBarHeight: CGFloat = 0
+    var safeAreaBottomInset: CGFloat?
+    var containerViewBottomAnchor: NSLayoutConstraint?
 
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
-        collectionView?.contentInset = UIEdgeInsets.init(top: 8, left: 0, bottom: 50, right: 0)
-        collectionView?.alwaysBounceVertical = true
-        //collectionView?.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 100)
-        collectionView?.backgroundColor = .white
-        collectionView?.register(MessagesViewCell.self, forCellWithReuseIdentifier: cellId)
         
         navigationItem.title = "Chat app"
-        navigationController?.navigationBar.barTintColor = .white
-//        navigationController?.setToolbarHidden(false, animated: false)
-//        let tf = UITextField(frame: CGRect(x: 0, y: 0, width: 200, height: 32))
-//        tf.borderStyle = .roundedRect
-//        tf.background = UIImage(named: "textfield_bg")
-        
-    
+        navigationController?.setToolbarHidden(false, animated: false)
+        navigationController?.navigationBar.isTranslucent = false
+
+        print("toolbar frame \(String(describing: navigationController?.toolbar.frame))")
+        let toolbarFrame: CGRect = navigationController!.toolbar.frame
+        bottomBarHeight = toolbarFrame.height
+
         
         let rightBarButton = UIBarButtonItem(customView: logoutBtn)
         navigationItem.rightBarButtonItems = [rightBarButton]
+        
         setupInputComponents()
-        //setupTableView()
+        collectionView?.contentInset = UIEdgeInsets.init(top: 8, left: 0, bottom: bottomBarHeight, right: 0)
+        collectionView?.alwaysBounceVertical = true
+        collectionView?.backgroundColor = .white
+        collectionView?.register(MessagesViewCell.self, forCellWithReuseIdentifier: cellId)
+    
 
         observeMessages()
        
-        // Do any additional setup after loading the view.
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardObserver), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardObserver), name: NSNotification.Name.UIKeyboardWillShow,object: nil)
+        //NotificationCenter.default.addObserver(self, selector: #selector(keyboardObserver), name: NSNotification.Name.UIKeyboardWillChangeFrame, object: nil)
+        
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.setToolbarHidden(true, animated: false)
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
+        if safeAreaBottomInset == nil {
+            if #available(iOS 11.0, *) {
+                print("safeAreaInsets \(view.safeAreaInsets)")
+                view.addSubview(safeAreaInsetCoverView)
+                safeAreaBottomInset = view.safeAreaInsets.bottom
+                safeAreaInsetCoverView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
+                safeAreaInsetCoverView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
+                safeAreaInsetCoverView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+                safeAreaInsetCoverView.heightAnchor.constraint(equalToConstant: view.safeAreaInsets.bottom).isActive = true
+            } else {
+                // Fallback on earlier versions
+                print("no safeAreaInsets")
+                safeAreaBottomInset = 0
+            }
+        }
+        
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+    }
+    
+    @objc func keyboardObserver(noticifation: Notification) {
+    
+        if let userInfo = noticifation.userInfo {
+            let keyboardFrame = (userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue
+            
+            let isKeyboardShowing = noticifation.name == NSNotification.Name.UIKeyboardWillShow
+            
+            containerViewBottomAnchor?.constant = isKeyboardShowing ? (-keyboardFrame!.height + safeAreaBottomInset!) : 0
+            
+            UIView.animate(withDuration: 0, delay: 0, options: .curveEaseOut, animations: {
+                self.view.layoutIfNeeded()
+            }) { (comleted) in
+                if isKeyboardShowing {
+                    let indexPath = IndexPath(item: self.messages.count
+                         - 1, section: 0)
+                    self.collectionView?.scrollToItem(at: indexPath, at: .bottom, animated: true)
+                }
+            }
+        }
+        
     }
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -94,6 +170,14 @@ class ChatRoomViewController: UICollectionViewController, UICollectionViewDelega
         cell.chatBubbleWidthAnchor?.constant = estimatedFrameForText(text: message.text!).width + 32
         return cell
     }
+    
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
+        if inputTextField.isEditing {
+            inputTextField.endEditing(true) // removes keyboard on item click
+        }
+    }
+    
     // collectionViewlayout
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
@@ -116,16 +200,14 @@ class ChatRoomViewController: UICollectionViewController, UICollectionViewDelega
     }
     
     func setupInputComponents(){
-        let containerView = UIView()
-        containerView.backgroundColor = .white
-        containerView.translatesAutoresizingMaskIntoConstraints = false
+    
         view.addSubview(containerView)
         // add constraints
         containerView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
-        containerView.bottomAnchor.constraint(equalTo: view.safeBottomAnchor).isActive  = true
+        containerViewBottomAnchor = containerView.bottomAnchor.constraint(equalTo: view.safeBottomAnchor, constant: 0)
+        containerViewBottomAnchor?.isActive  = true
         containerView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
-        containerView.heightAnchor.constraint(equalToConstant: 50).isActive = true
-        
+        containerView.heightAnchor.constraint(equalToConstant: bottomBarHeight).isActive = true
         
         
         //send button
@@ -151,7 +233,7 @@ class ChatRoomViewController: UICollectionViewController, UICollectionViewDelega
         
         //separator line
         let separatorline = UIView()
-        separatorline.backgroundColor = .black
+        separatorline.backgroundColor = .gray
         separatorline.translatesAutoresizingMaskIntoConstraints = false
         containerView.addSubview(separatorline)
         //consttraints
@@ -160,21 +242,23 @@ class ChatRoomViewController: UICollectionViewController, UICollectionViewDelega
         separatorline.widthAnchor.constraint(equalTo: containerView.widthAnchor).isActive = true
         separatorline.heightAnchor.constraint(equalToConstant: 0.5).isActive = true
     }
-    
-    func setupTableView(){
-   
-    }
+  
 
     @objc func sendMessage(){
-        let ref = Database.database().reference().child("messages")
-        let childRef = ref.childByAutoId()
-        let values = ["text": inputTextField.text!, "sender": "midoriya"]
-        childRef.updateChildValues(values) { (error, ref) in
-            if error != nil{
-                return
+        
+        if inputTextField.text!.trimmingCharacters(in: .whitespacesAndNewlines).count != 0{
+            let ref = Database.database().reference().child("messages")
+            let childRef = ref.childByAutoId()
+            let values = ["text": inputTextField.text!, "sender": "midoriya"]
+            childRef.updateChildValues(values) { (error, ref) in
+                if error != nil{
+                    return
+                }
+                self.inputTextField.text = nil
+                self.inputTextField.endEditing(true)
             }
-            self.inputTextField.text = nil
         }
+        
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
@@ -198,15 +282,14 @@ class ChatRoomViewController: UICollectionViewController, UICollectionViewDelega
                 //msg.setValuesForKeys(dictionary)
                 
                self.messages.append(msg)
-//
+
                 DispatchQueue.main.async {
+                    
                     self.collectionView?.reloadData()
+                    self.collectionView?.scrollToItem(at: IndexPath(row: self.messages.count - 1, section: 0), at: .bottom, animated: true)
                 }
 
-                // todo
-                // reload data of collectionview
             }
         }, withCancel: nil)
     }
-
 }

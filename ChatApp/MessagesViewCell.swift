@@ -18,6 +18,7 @@ class MessagesViewCell: UICollectionViewCell {
         textView.backgroundColor = .clear
         textView.textColor = .white
         textView.isScrollEnabled = false
+        textView.isEditable = false
         return textView
     }()
     
@@ -34,7 +35,6 @@ class MessagesViewCell: UICollectionViewCell {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.systemFont(ofSize: 16)
         label.text = "Jovanie"
-        label.backgroundColor = .gray
         return label
     }()
     
@@ -42,8 +42,8 @@ class MessagesViewCell: UICollectionViewCell {
     var chatBubbleRightAnchor: NSLayoutConstraint?
     var chatBubbleLeftAnchor: NSLayoutConstraint?
     
-    var isUser: Bool = true
-    var isMember: Bool = false
+    var isCurrentUser: Bool = false
+    var usersName: String = ""
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -52,11 +52,12 @@ class MessagesViewCell: UICollectionViewCell {
         addSubview(messageTextView)
 
         chatBubbleRightAnchor = chatBubble.rightAnchor.constraint(equalTo: self.rightAnchor)
-        chatBubbleRightAnchor?.isActive = true
+        chatBubbleRightAnchor?.isActive = isCurrentUser
+        
         chatBubble.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
         
         chatBubbleLeftAnchor = chatBubble.leftAnchor.constraint(equalTo: self.leftAnchor)
-        chatBubbleLeftAnchor?.isActive = isUser
+        chatBubbleLeftAnchor?.isActive = !isCurrentUser
         
         chatBubbleWidthAnchor = chatBubble.widthAnchor.constraint(equalToConstant: 200)
         chatBubbleWidthAnchor?.isActive = true
@@ -64,7 +65,12 @@ class MessagesViewCell: UICollectionViewCell {
         chatBubble.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -20).isActive = true
         
         let iv  = UIImageView(frame: .zero)
-        iv.image = UIImage(named: "chat_bubble")?.resizableImage(withCapInsets: UIEdgeInsets.init(top: 7, left: 13, bottom: 26, right: 13))
+        let imageName: String = isCurrentUser ? "chat_bubble_user" : "chat_bubble"
+        let topInset: CGFloat = isCurrentUser ? 26 : 7
+        let bottonInset: CGFloat = isCurrentUser ? 7 : 27
+        userTextLabel.textAlignment = isCurrentUser ? .right: .left
+        
+        iv.image = UIImage(named: imageName)?.resizableImage(withCapInsets: UIEdgeInsets.init(top: topInset, left: 13, bottom: bottonInset, right: 13))
         iv.translatesAutoresizingMaskIntoConstraints = false
         chatBubble.addSubview(iv)
         

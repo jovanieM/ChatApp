@@ -13,8 +13,4 @@ class User: NSObject{
     var username: String?
     var password: String?
     
-    init(name: String, password: String) {
-        self.username = name
-        self.password = password
-    }
 }

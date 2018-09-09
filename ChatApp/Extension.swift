@@ -51,11 +51,6 @@ extension UITextField {
     }
 }
 
-extension String {
-    func getUnderlinedAttributedText() -> NSAttributedString{
-        return NSMutableAttributedString(string: self, attributes: [NSAttributedStringKey.underlineStyle: NSUnderlineStyle.styleSingle.rawValue])
-    }
-}
 
 extension UIView {
     
