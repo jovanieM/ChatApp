@@ -221,26 +221,56 @@ class SignupViewController: UIViewController, UITextFieldDelegate {
             throw LoginSignUpError.IncorrectNameOrPassword
         }
         
-        signUpNewUser(withName: username) { (isAvailble) in
-            //
+        signUpNewUser(withName: username) { (available) in
+            if available {
+                // proceed to saving user data
+            } else {
+                //throw error
+            }
         }
        
         print("no error detected")
         
     }
     
-    func signUpNewUser(withName: String, completion: @escaping (_ isAvailable: Bool) -> ()){
+    func signUpNewUser(withName: String, completion: @escaping(Bool) -> ()){
     
         let ref = Database.database().reference().child("users")
-    
-        ref.observe(.childAdded) { (snapshot) in
-            if let dictionary = snapshot.value as? [String: String] {
-                print("username is \(dictionary.debugDescription)")
+        
+        ref.observeSingleEvent(of: .value, with: { (snapshot) in
             
-                let username: String = dictionary["username"]!
-                completion(withName != username)
+            var usernames: [String] = []
+            
+            if let dictionary = snapshot.value as? [String: AnyObject] {
+                print("username is \(dictionary.debugDescription)")
+                
+                for user in dictionary.values{
+                    usernames.append((user["username"] as? String)!)
+                    print("values \(user["username"])")
+                }
+              //  let user = dictionary.values
             }
+            if usernames.contains(withName){
+                completion(true)
+            } else {
+                completion(false)
+            }
+            
+            print("snapshot")
+        }) { (error) in
+            print(error)
+            
         }
+        print("execution complete")
+    
+//        ref.(.childAdded) { (snapshot) in
+//           if let dictionary = snapshot.value as? [String: AnyObject] {
+//                print("username is \(dictionary.debugDescription)")
+            
+//                let username: String = dictionary["username"]!
+//                completion(withName != username)
+//            }
+//        }
 //        ref.observeSingleEvent(of: .childAdded, with: { (snapshot) in
 //
 //            if let dictionary = snapshot.value as? [String: String] {
