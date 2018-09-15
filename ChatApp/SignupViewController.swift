@@ -76,24 +76,8 @@ class SignupViewController: BaseViewController, UITextFieldDelegate {
         super.viewDidLoad()
         view.backgroundColor = .white
         navigationItem.title = "Chat app"
-        signupBtn.addTarget(self, action: #selector(validateForm), for: .touchUpInside)
-       // navigationItem.hidesBackButton = false
-        //navigationItem.hidesBackButton = true
-    //    navigationController?.navigationItem.setHidesBackButton(true, animated: false)
-    
-//        navBar = _navigationBar
-//        self.view.addSubview(navBar!)
-//
-//        view.addSubview(userTextField)
-//        view.addSubview(passwordTextField)
-//        view.addSubview(signupBtn)
-//        view.addSubview(loginLnk)
-//        view.addSubview(userAgreementLabel)
-//        setUserTextField()
-//        setPasswordTextField()
-//        setupSignupBtn()
-//        setupLoginLink()
-//        setupUserAgreementLabel()
+        signupLoginBtn.addTarget(self, action: #selector(validateSignupForm), for: .touchUpInside)
+
 
     }
     
@@ -102,27 +86,11 @@ class SignupViewController: BaseViewController, UITextFieldDelegate {
         navigationItem.hidesBackButton = true
     }
     
-    @objc func validateForm() {
+    @objc func validateSignupForm() {
         let userInput = userTextField.text!
         let passwordInput = passwordTextField.text!
         
-        let userInputStringCount: Int = userInput.trimmingCharacters(in: .whitespacesAndNewlines).count
-        let passwordInputStringCount: Int = passwordInput.trimmingCharacters(in: .whitespacesAndNewlines).count
-        
-        
-        if userInputStringCount == 0 || passwordInputStringCount == 0 {
-            print("error")
-            displayError()
-            return
-        }
-        
-        if (userInputStringCount < 8 || userInputStringCount > 16) ||
-            (passwordInputStringCount < 8 || passwordInputStringCount > 16) {
-            print("error")
-            displayError()
-            return
-        }
-        
+        guard verifyForm(user: userInput, pass: passwordInput) else {return}
         
         isUsernameAvailable(username: userInput) { (available) in
             self.signupUser(user: userInput, pass: passwordInput,completion: {
@@ -138,11 +106,11 @@ class SignupViewController: BaseViewController, UITextFieldDelegate {
         
     }
     
-    var usernames = [String]()
-    var matchResult: Bool?
+    
     
     func isUsernameAvailable(username: String, completion: @escaping (Bool) ->())  {
         var isAvailable: Bool = true
+        var usernames = [String]()
         let ref = Database.database().reference().child("users")
         ref.observeSingleEvent(of: .value, with: { (snapshot) in
             if let dictionary = snapshot.value as? [String: AnyObject] {
@@ -152,20 +120,19 @@ class SignupViewController: BaseViewController, UITextFieldDelegate {
                 for user in dictionary.values{
                     
                     let _user = user["username"] as! String
-                    if !self.usernames.contains(username){
-                        self.usernames.append(_user)
+                    if !usernames.contains(username){
+                        usernames.append(_user)
                         print(_user)
                     } else {
                         isAvailable = false
                         break
                     }
                    // usernames.append((user["username"] as? String)!)
-                    
                 }
                 
-                completion(isAvailable)
-                              //  let user = dictionary.values
                 }
+            //call completion closure and pass result as parameter
+            completion(isAvailable)
     
         }) { (error) in
             

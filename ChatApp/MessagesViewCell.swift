@@ -12,8 +12,8 @@ class MessagesViewCell: UICollectionViewCell {
     
     let messageTextView : UITextView = {
         let textView = UITextView()
-        textView.text = "sample texts"
         textView.font = UIFont.systemFont(ofSize: 16)
+        textView.backgroundColor = .yellow
         textView.translatesAutoresizingMaskIntoConstraints = false
         textView.backgroundColor = .clear
         textView.textColor = .white
@@ -24,6 +24,7 @@ class MessagesViewCell: UICollectionViewCell {
     
     let chatBubble: UIView = {
         let view = UIView()
+      //  view.backgroundColor = .red
         //view.backgroundColor = UIColor(red: 136/255, green: 227/255, blue: 6/255, alpha: 1.0)
         view.translatesAutoresizingMaskIntoConstraints = false
         
@@ -34,7 +35,7 @@ class MessagesViewCell: UICollectionViewCell {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.systemFont(ofSize: 16)
-        label.text = "Jovanie"
+        label.backgroundColor = .blue
         return label
     }()
     let bubbleImageView: UIImageView = {
@@ -46,6 +47,8 @@ class MessagesViewCell: UICollectionViewCell {
     var chatBubbleWidthAnchor: NSLayoutConstraint?
     var chatBubbleRightAnchor: NSLayoutConstraint?
     var chatBubbleLeftAnchor: NSLayoutConstraint?
+    var messageLeftViewAnchor: NSLayoutConstraint?
+    var messageRightViewAnchor: NSLayoutConstraint?
     
     var isCurrentUser: Bool = false
     var usersName: String = ""
@@ -56,12 +59,12 @@ class MessagesViewCell: UICollectionViewCell {
         addSubview(userTextLabel)
         addSubview(messageTextView)
 
-        chatBubbleRightAnchor = chatBubble.rightAnchor.constraint(equalTo: self.rightAnchor)
+        chatBubbleRightAnchor = chatBubble.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -5)
         chatBubbleRightAnchor?.isActive = isCurrentUser
         
         chatBubble.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
         
-        chatBubbleLeftAnchor = chatBubble.leftAnchor.constraint(equalTo: self.leftAnchor)
+        chatBubbleLeftAnchor = chatBubble.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 5)
         chatBubbleLeftAnchor?.isActive = !isCurrentUser
         
         chatBubbleWidthAnchor = chatBubble.widthAnchor.constraint(equalToConstant: 200)
@@ -70,12 +73,12 @@ class MessagesViewCell: UICollectionViewCell {
         chatBubble.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -20).isActive = true
         
         
-        let imageName: String = isCurrentUser ? "chat_bubble_user" : "chat_bubble"
-        let topInset: CGFloat = isCurrentUser ? 26 : 7
-        let bottonInset: CGFloat = isCurrentUser ? 7 : 27
-        userTextLabel.textAlignment = isCurrentUser ? .right: .left
+//        let imageName: String = isCurrentUser ? "chat_bubble_user" : "chat_bubble"
+//        let topInset: CGFloat = isCurrentUser ? 26 : 7
+//        let bottonInset: CGFloat = isCurrentUser ? 7 : 27
+//        userTextLabel.textAlignment = isCurrentUser ? .right: .left
         
-        bubbleImageView.image = UIImage(named: imageName)?.resizableImage(withCapInsets: UIEdgeInsets.init(top: topInset, left: 13, bottom: bottonInset, right: 13))
+        //bubbleImageView.image = UIImage(named: imageName)?.resizableImage(withCapInsets: UIEdgeInsets.init(top: topInset, left: 13, bottom: bottonInset, right: 13))
         bubbleImageView.translatesAutoresizingMaskIntoConstraints = false
         chatBubble.addSubview(bubbleImageView)
         
@@ -86,17 +89,20 @@ class MessagesViewCell: UICollectionViewCell {
         
         
         //usertextLabel constraints
-        userTextLabel.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 8).isActive = true
+        userTextLabel.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 5).isActive = true
         userTextLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
-        userTextLabel.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -8).isActive = true
+        userTextLabel.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -5).isActive = true
         userTextLabel.heightAnchor.constraint(equalToConstant: 20).isActive = true
         
         //constraints
         //messageTextView.rightAnchor.constraint(equalTo: self.rightAnchor).isActive = true
-        messageTextView.leftAnchor.constraint(equalTo: chatBubble.leftAnchor, constant: 8).isActive = true
         messageTextView.topAnchor.constraint(equalTo: chatBubble.topAnchor).isActive = true
-        messageTextView.rightAnchor.constraint(equalTo: chatBubble.rightAnchor, constant: -8).isActive = true
         messageTextView.bottomAnchor.constraint(equalTo: chatBubble.bottomAnchor).isActive = true
+        
+        messageLeftViewAnchor = messageTextView.leftAnchor.constraint(equalTo: chatBubble.leftAnchor)
+        messageLeftViewAnchor?.isActive = true
+        messageRightViewAnchor = messageTextView.rightAnchor.constraint(equalTo: chatBubble.rightAnchor)
+        messageRightViewAnchor?.isActive = true
     }
     
     required init?(coder aDecoder: NSCoder) {

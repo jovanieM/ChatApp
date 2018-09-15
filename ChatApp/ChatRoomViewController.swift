@@ -68,7 +68,6 @@ class ChatRoomViewController: UICollectionViewController, UICollectionViewDelega
     
     let cellId = "cellId"
     
-    lazy var bottomBarHeight: CGFloat = 0
     var safeAreaBottomInset: CGFloat?
     var containerViewBottomAnchor: NSLayoutConstraint?
 
@@ -80,16 +79,13 @@ class ChatRoomViewController: UICollectionViewController, UICollectionViewDelega
         navigationController?.setToolbarHidden(false, animated: false)
         navigationController?.navigationBar.isTranslucent = false
 
-        print("toolbar frame \(String(describing: navigationController?.toolbar.frame))")
-        let toolbarFrame: CGRect = navigationController!.toolbar.frame
-        bottomBarHeight = toolbarFrame.height
 
         
         let rightBarButton = UIBarButtonItem(customView: logoutBtn)
         navigationItem.rightBarButtonItems = [rightBarButton]
         
         setupInputComponents()
-        collectionView?.contentInset = UIEdgeInsets.init(top: 8, left: 0, bottom: bottomBarHeight, right: 0)
+        collectionView?.contentInset = UIEdgeInsets.init(top: 8, left: 0, bottom: 47.5, right: 0)
         collectionView?.alwaysBounceVertical = true
         collectionView?.backgroundColor = .white
         collectionView?.register(MessagesViewCell.self, forCellWithReuseIdentifier: cellId)
@@ -173,13 +169,17 @@ class ChatRoomViewController: UICollectionViewController, UICollectionViewDelega
         if  test == 0{
             cell.chatBubbleRightAnchor?.isActive = true
             cell.chatBubbleLeftAnchor?.isActive = false
+           // cell.messageTextView.backgroundColor = .black
+            cell.messageLeftViewAnchor?.constant = 0
+            cell.messageRightViewAnchor?.constant = -5
+           
             cell.bubbleImageView.image = UIImage(named: "chat_bubble_user")?
-            .resizableImage(withCapInsets: UIEdgeInsets.init(top: 26, left: 13, bottom: 7, right: 13))
+            .resizableImage(withCapInsets: UIEdgeInsets.init(top: 7, left: 13, bottom: 26, right: 13))
         } else {
             cell.chatBubbleRightAnchor?.isActive = false
             cell.chatBubbleLeftAnchor?.isActive = true
-            cell.bubbleImageView.image = UIImage(named: "chat_bubble")?
-                .resizableImage(withCapInsets: UIEdgeInsets.init(top: 7, left: 13, bottom: 26, right: 13))
+//            cell.bubbleImageView.image = UIImage(named: "chat_bubble")?
+//                .resizableImage(withCapInsets: UIEdgeInsets.init(top: 7, left: 13, bottom: 26, right: 13))
         }
         
         cell.chatBubbleWidthAnchor?.constant = estimatedFrameForText(text: message.text!).width + 32
@@ -222,7 +222,7 @@ class ChatRoomViewController: UICollectionViewController, UICollectionViewDelega
         containerViewBottomAnchor = containerView.bottomAnchor.constraint(equalTo: view.safeBottomAnchor, constant: 0)
         containerViewBottomAnchor?.isActive  = true
         containerView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
-        containerView.heightAnchor.constraint(equalToConstant: bottomBarHeight).isActive = true
+        containerView.heightAnchor.constraint(equalToConstant: 47.5).isActive = true
         
         
         //send button

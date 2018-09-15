@@ -60,7 +60,7 @@ class BaseViewController: UIViewController {
         return label
     }()
     
-    var signupBtn: UIButton = {
+    var signupLoginBtn: UIButton = {
         let button = UIButton(type: UIButtonType.custom)
         button.setBackgroundImage(UIImage(named: "green_btn_light"), for: .normal)
         button.setTitle("Sign up", for: .normal)
@@ -69,7 +69,7 @@ class BaseViewController: UIViewController {
         return button
     }()
     
-    var loginLnk: UILabel = {
+    var signuploginLink: UILabel = {
       //  let button = UIButton(type: UIButtonType.custom)
       //  let title: NSAttributedString = NSAttributedString(string: "Login")
       //  button.setAttributedTitle(title, for: .normal)
@@ -110,8 +110,8 @@ class BaseViewController: UIViewController {
         view.addSubview(userInputErrorLabel)
         view.addSubview(passwordTextField)
         view.addSubview(passwordInputErrorLabel)
-        view.addSubview(signupBtn)
-        view.addSubview(loginLnk)
+        view.addSubview(signupLoginBtn)
+        view.addSubview(signuploginLink)
         view.addSubview(underLine)
         view.addSubview(userAgreementLabel)
         setUserTextField()
@@ -122,13 +122,9 @@ class BaseViewController: UIViewController {
         setupLoginLink()
         setUndeline()
         setupUserAgreementLabel1()
-        // Do any additional setup after loading the view.
+
     }
-    
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        //print(self.navigationController?.navigationBar.frame)
-    }
+   
     
     func setUserTextField() {
         //need x, y, width, height
@@ -149,12 +145,11 @@ class BaseViewController: UIViewController {
     }
     
     func setPasswordTextField() {
-        //need x, y, width, height
-       // let width: CGFloat = view.bounds.width * (603 / 640)
+        
         let constraints: [NSLayoutConstraint] = [passwordTextField.leftAnchor.constraint(equalTo: userTextField.leftAnchor),
                                                  passwordTextField.topAnchor.constraint(equalTo: userInputErrorLabel.bottomAnchor, constant: 15),
                                                  passwordTextField.widthAnchor.constraint(equalTo: userTextField.widthAnchor),
-                                                 passwordTextField.heightAnchor.constraint(equalTo: userTextField.heightAnchor)]//79 *  (568 / 1136))]
+                                                 passwordTextField.heightAnchor.constraint(equalTo: userTextField.heightAnchor)]
         NSLayoutConstraint.activate(constraints)
     }
     
@@ -167,24 +162,23 @@ class BaseViewController: UIViewController {
     }
     
     func setupSignupBtn() {
-        //need x, y, width, height
-        let width: CGFloat = view.bounds.width * (603 / 640)
-        let constraints: [NSLayoutConstraint] = [signupBtn.topAnchor.constraint(equalTo: passwordInputErrorLabel.bottomAnchor, constant: 15),
-                                                 signupBtn.leftAnchor.constraint(equalTo: passwordTextField.leftAnchor),//40 * (568 / 1136)), // (568 / 1136) = device points to pixel ratio
-                                                 signupBtn.widthAnchor.constraint(equalTo: passwordTextField.widthAnchor)]
+
+        let constraints: [NSLayoutConstraint] = [signupLoginBtn.topAnchor.constraint(equalTo: passwordInputErrorLabel.bottomAnchor, constant: 15),
+                                                 signupLoginBtn.leftAnchor.constraint(equalTo: passwordTextField.leftAnchor),
+                                                 signupLoginBtn.widthAnchor.constraint(equalTo: passwordTextField.widthAnchor)]
         NSLayoutConstraint.activate(constraints)
     }
     
     func setupLoginLink() {
-        let constraints: [NSLayoutConstraint] = [loginLnk.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-                                                 loginLnk.topAnchor.constraint(equalTo: signupBtn.bottomAnchor, constant: 20 * (568 / 1136))]
+        let constraints: [NSLayoutConstraint] = [signuploginLink.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+                                                 signuploginLink.topAnchor.constraint(equalTo: signupLoginBtn.bottomAnchor, constant: 20 * (568 / 1136))]
         NSLayoutConstraint.activate(constraints)
     }
     
     func setUndeline(){
-        let constraints: [NSLayoutConstraint] = [underLine.topAnchor.constraint(equalTo: loginLnk.bottomAnchor, constant: -1),
-                                                 underLine.widthAnchor.constraint(equalTo: loginLnk.widthAnchor),
-                                                 underLine.leftAnchor.constraint(equalTo: loginLnk.leftAnchor),
+        let constraints: [NSLayoutConstraint] = [underLine.topAnchor.constraint(equalTo: signuploginLink.bottomAnchor, constant: -1),
+                                                 underLine.widthAnchor.constraint(equalTo: signuploginLink.widthAnchor),
+                                                 underLine.leftAnchor.constraint(equalTo: signuploginLink.leftAnchor),
                                                  underLine.heightAnchor.constraint(equalToConstant: 1)]
         NSLayoutConstraint.activate(constraints)
     }
@@ -197,7 +191,7 @@ class BaseViewController: UIViewController {
     }
     
     func setupUserAgreementLabel() {
-        userAgreementLabel.anchor(top: loginLnk.bottomAnchor,
+        userAgreementLabel.anchor(top: signuploginLink.bottomAnchor,
                                   leading: nil,
                                   bottom: nil,
                                   trailing: nil,
@@ -211,6 +205,28 @@ class BaseViewController: UIViewController {
     func displayError(){
         userInputErrorLabel.text = "Value is incorrect"
         passwordInputErrorLabel.text = "Value is incorrect"
+    }
+    
+    func verifyForm(user: String, pass: String) ->Bool{
+        
+        let userInputStringCount: Int = user.trimmingCharacters(in: .whitespacesAndNewlines).count
+        let passwordInputStringCount: Int = user.trimmingCharacters(in: .whitespacesAndNewlines).count
+        
+        
+        if userInputStringCount == 0 || passwordInputStringCount == 0 {
+            print("error")
+            displayError()
+            return false
+        }
+        
+        if (userInputStringCount < 8 || userInputStringCount > 16) ||
+            (passwordInputStringCount < 8 || passwordInputStringCount > 16) {
+            print("error")
+            displayError()
+            return false
+        }
+        
+        return true
     }
 
     override func didReceiveMemoryWarning() {

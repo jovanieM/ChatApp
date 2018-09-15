@@ -21,7 +21,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window = UIWindow(frame: UIScreen.main.bounds)
         window?.makeKeyAndVisible()
         
-        window?.rootViewController = MainNavigationController(rootViewController: IndexViewController())
+        window?.rootViewController = MainNavigationController(rootViewController: ChatRoomViewController(collectionViewLayout: UICollectionViewFlowLayout()))
         
 
         return true

@@ -18,6 +18,7 @@
 		856712D6213E07BD00CCFE50 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 856712D4213E07BD00CCFE50 /* LaunchScreen.storyboard */; };
 		857B184E21436976002802E4 /* MessagesViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 857B184D21436976002802E4 /* MessagesViewCell.swift */; };
 		8586BEE6214C98DD00DE40E5 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8586BEE5214C98DD00DE40E5 /* BaseViewController.swift */; };
+		858E5FDD214CF4C90099BA13 /* FirebaseHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 858E5FDC214CF4C90099BA13 /* FirebaseHelper.swift */; };
 		85954899213E40FC00E2CFCE /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 85954898213E40FC00E2CFCE /* GoogleService-Info.plist */; };
 		8595489C213E9A0C00E2CFCE /* IndexViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8595489B213E9A0C00E2CFCE /* IndexViewController.swift */; };
 		8595489E213EAF0D00E2CFCE /* SignupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8595489D213EAF0D00E2CFCE /* SignupViewController.swift */; };
@@ -43,6 +44,7 @@
 		856712D7213E07BD00CCFE50 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		857B184D21436976002802E4 /* MessagesViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesViewCell.swift; sourceTree = "<group>"; };
 		8586BEE5214C98DD00DE40E5 /* BaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
+		858E5FDC214CF4C90099BA13 /* FirebaseHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseHelper.swift; sourceTree = "<group>"; };
 		85954898213E40FC00E2CFCE /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		8595489B213E9A0C00E2CFCE /* IndexViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndexViewController.swift; sourceTree = "<group>"; };
 		8595489D213EAF0D00E2CFCE /* SignupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupViewController.swift; sourceTree = "<group>"; };
@@ -118,6 +120,7 @@
 				857B184D21436976002802E4 /* MessagesViewCell.swift */,
 				853F3CDF214A78A500C3DCB3 /* MainNavigationController.swift */,
 				8586BEE5214C98DD00DE40E5 /* BaseViewController.swift */,
+				858E5FDC214CF4C90099BA13 /* FirebaseHelper.swift */,
 			);
 			path = ChatApp;
 			sourceTree = "<group>";
@@ -266,6 +269,7 @@
 				859548A4213EB62300E2CFCE /* Extension.swift in Sources */,
 				853D3A962142193600C3C5CC /* User.swift in Sources */,
 				8595489C213E9A0C00E2CFCE /* IndexViewController.swift in Sources */,
+				858E5FDD214CF4C90099BA13 /* FirebaseHelper.swift in Sources */,
 				8595489E213EAF0D00E2CFCE /* SignupViewController.swift in Sources */,
 				853D3A98214256CC00C3C5CC /* CurrentUser.swift in Sources */,
 				853D3A942142188C00C3C5CC /* Message.swift in Sources */,
