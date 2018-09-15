@@ -8,40 +8,6 @@
 
 import UIKit
 
-extension UIViewController {
-    
-    var _navigationBar: UINavigationBar {
-        let statusBarHeight : CGFloat = UIApplication.shared.statusBarFrame.height
-        let navBar = UINavigationBar(frame: CGRect(x: 0, y: statusBarHeight, width: self.view.frame.width, height: 44))
-        navBar.barTintColor = .white
-        let navItem = UINavigationItem(title: "Chat app")
-        navBar.setItems([navItem], animated: false)
-      
-        return navBar
-    }
-    var _bottomBar: UIView {
-        let bottomBAr: UIView = UIView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 44))
-        bottomBAr.translatesAutoresizingMaskIntoConstraints = false
-        let chatbox: UITextField = UITextField()
-        chatbox.borderStyle = .roundedRect
-        chatbox.backgroundColor = .red
-        chatbox.translatesAutoresizingMaskIntoConstraints = false
-        bottomBAr.addSubview(chatbox)
-        chatbox.anchor(top: bottomBAr.topAnchor, leading: bottomBAr.leadingAnchor, bottom: bottomBAr.bottomAnchor, trailing: bottomBAr.trailingAnchor, centerX: bottomBAr.centerXAnchor, centerY: nil, padding: UIEdgeInsets.init(top: 4, left: 4, bottom: 4, right: 4))
-        
-        return bottomBAr
-    }
-    
-    
-    func setNavigationBar(){
-        let statusBarHeight : CGFloat = UIApplication.shared.statusBarFrame.height
-        let navBar = UINavigationBar(frame: CGRect(x: 0, y: statusBarHeight, width: self.view.frame.width, height: 44))
-        navBar.barTintColor = .white
-        let navItem = UINavigationItem(title: "Chat app")
-        navBar.setItems([navItem], animated: false)
-        self.view.addSubview(navBar)
-    }
-}
 
 extension UITextField {
     func setLeftPaddingPoints (_ value: CGFloat){

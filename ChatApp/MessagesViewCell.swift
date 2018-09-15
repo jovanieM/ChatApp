@@ -37,6 +37,11 @@ class MessagesViewCell: UICollectionViewCell {
         label.text = "Jovanie"
         return label
     }()
+    let bubbleImageView: UIImageView = {
+        let imageView = UIImageView(frame: .zero)
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        return imageView
+    }()
     
     var chatBubbleWidthAnchor: NSLayoutConstraint?
     var chatBubbleRightAnchor: NSLayoutConstraint?
@@ -64,20 +69,20 @@ class MessagesViewCell: UICollectionViewCell {
         
         chatBubble.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -20).isActive = true
         
-        let iv  = UIImageView(frame: .zero)
+        
         let imageName: String = isCurrentUser ? "chat_bubble_user" : "chat_bubble"
         let topInset: CGFloat = isCurrentUser ? 26 : 7
         let bottonInset: CGFloat = isCurrentUser ? 7 : 27
         userTextLabel.textAlignment = isCurrentUser ? .right: .left
         
-        iv.image = UIImage(named: imageName)?.resizableImage(withCapInsets: UIEdgeInsets.init(top: topInset, left: 13, bottom: bottonInset, right: 13))
-        iv.translatesAutoresizingMaskIntoConstraints = false
-        chatBubble.addSubview(iv)
+        bubbleImageView.image = UIImage(named: imageName)?.resizableImage(withCapInsets: UIEdgeInsets.init(top: topInset, left: 13, bottom: bottonInset, right: 13))
+        bubbleImageView.translatesAutoresizingMaskIntoConstraints = false
+        chatBubble.addSubview(bubbleImageView)
         
-        iv.leftAnchor.constraint(equalTo: chatBubble.leftAnchor).isActive = true
-        iv.topAnchor.constraint(equalTo: chatBubble.topAnchor).isActive = true
-        iv.rightAnchor.constraint(equalTo: chatBubble.rightAnchor).isActive = true
-        iv.bottomAnchor.constraint(equalTo: chatBubble.bottomAnchor).isActive = true
+        bubbleImageView.leftAnchor.constraint(equalTo: chatBubble.leftAnchor).isActive = true
+        bubbleImageView.topAnchor.constraint(equalTo: chatBubble.topAnchor).isActive = true
+        bubbleImageView.rightAnchor.constraint(equalTo: chatBubble.rightAnchor).isActive = true
+        bubbleImageView.bottomAnchor.constraint(equalTo: chatBubble.bottomAnchor).isActive = true
         
         
         //usertextLabel constraints

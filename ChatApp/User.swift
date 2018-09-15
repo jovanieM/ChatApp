@@ -8,9 +8,18 @@
 
 import UIKit
 
-class User: NSObject{
+class User{
+    
+    let USER_KEY = "username"
+    let PASS_KEY = "password"
 
-    var username: String?
-    var password: String?
+    var username: String
+    var password: String
+    
+    init(user: String, pass: String){
+        username = user
+        password = pass
+    }
+  
     
 }

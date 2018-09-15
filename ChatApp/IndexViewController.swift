@@ -86,13 +86,20 @@ class IndexViewController: UIViewController {
     }
     
     @objc func presentSignupVC(){
-        let signUpVC = SignupViewController()
-        self.show(signUpVC, sender: self)
+        let signupVC = SignupViewController()
+        let mainNav = self.navigationController as! MainNavigationController
+        mainNav.pushViewController(signupVC, animated: true)
     }
     
     @objc func presentLoginVC(){
         let loginVC = LoginViewController()
-        self.show(loginVC, sender: self)
+        let mainNav = self.navigationController as! MainNavigationController
+        mainNav.pushViewController(loginVC, animated: true)
+        
+    }
+    
+    deinit {
+        print("de init is called")
     }
     
 }

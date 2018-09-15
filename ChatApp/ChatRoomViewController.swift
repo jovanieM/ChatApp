@@ -32,6 +32,7 @@ class ChatRoomViewController: UICollectionViewController, UICollectionViewDelega
         button.setTitle("Logout", for: .normal)
         button.frame = CGRect(x: 0, y: 0, width: 50, height: 30)
         button.backgroundColor = .blue
+        button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
     
@@ -94,8 +95,6 @@ class ChatRoomViewController: UICollectionViewController, UICollectionViewDelega
         collectionView?.register(MessagesViewCell.self, forCellWithReuseIdentifier: cellId)
     
 
-        observeMessages()
-       
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardObserver), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardObserver), name: NSNotification.Name.UIKeyboardWillShow,object: nil)
         //NotificationCenter.default.addObserver(self, selector: #selector(keyboardObserver), name: NSNotification.Name.UIKeyboardWillChangeFrame, object: nil)
@@ -126,6 +125,10 @@ class ChatRoomViewController: UICollectionViewController, UICollectionViewDelega
             }
         }
         
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        observeMessages()
     }
     
     deinit {
@@ -166,6 +169,18 @@ class ChatRoomViewController: UICollectionViewController, UICollectionViewDelega
         let message = messages[indexPath.item]
         cell.messageTextView.text = message.text
         cell.userTextLabel.text = message.sender
+        let test = messages.count % 2
+        if  test == 0{
+            cell.chatBubbleRightAnchor?.isActive = true
+            cell.chatBubbleLeftAnchor?.isActive = false
+            cell.bubbleImageView.image = UIImage(named: "chat_bubble_user")?
+            .resizableImage(withCapInsets: UIEdgeInsets.init(top: 26, left: 13, bottom: 7, right: 13))
+        } else {
+            cell.chatBubbleRightAnchor?.isActive = false
+            cell.chatBubbleLeftAnchor?.isActive = true
+            cell.bubbleImageView.image = UIImage(named: "chat_bubble")?
+                .resizableImage(withCapInsets: UIEdgeInsets.init(top: 7, left: 13, bottom: 26, right: 13))
+        }
         
         cell.chatBubbleWidthAnchor?.constant = estimatedFrameForText(text: message.text!).width + 32
         return cell
@@ -284,7 +299,7 @@ class ChatRoomViewController: UICollectionViewController, UICollectionViewDelega
                self.messages.append(msg)
 
                 DispatchQueue.main.async {
-                    
+                    print("messages count \(self.messages.count)")
                     self.collectionView?.reloadData()
                     self.collectionView?.scrollToItem(at: IndexPath(row: self.messages.count - 1, section: 0), at: .bottom, animated: true)
                 }
