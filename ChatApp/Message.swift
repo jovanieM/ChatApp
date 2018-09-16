@@ -12,4 +12,5 @@ class Message: NSObject {
 
     var sender: String?
     var text: String?
+   
 }

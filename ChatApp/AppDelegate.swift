@@ -21,7 +21,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window = UIWindow(frame: UIScreen.main.bounds)
         window?.makeKeyAndVisible()
         
-        window?.rootViewController = MainNavigationController(rootViewController: ChatRoomViewController(collectionViewLayout: UICollectionViewFlowLayout()))
+//        let collectionViewFlowLayout = UICollectionViewFlowLayout()
+//        collectionViewFlowLayout.minimumLineSpacing = 20
+        window?.rootViewController = MainNavigationController(rootViewController: IndexViewController())
         
 
         return true

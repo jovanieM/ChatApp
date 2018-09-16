@@ -12,7 +12,7 @@ import FirebaseDatabase
 
 class ChatRoomViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout, UITextFieldDelegate{
     
-   
+    var user: User?
     
     let containerView:UIView = {
         let uiView: UIView = UIView()
@@ -21,18 +21,24 @@ class ChatRoomViewController: UICollectionViewController, UICollectionViewDelega
         return uiView
     }()
     
-    var user: User? {
-        didSet{
-//            observeMessages()
-        }
-    }
     
-    let logoutBtn: UIButton = {
-        let button = UIButton(type: UIButtonType.system)
-        button.setTitle("Logout", for: .normal)
-        button.frame = CGRect(x: 0, y: 0, width: 50, height: 30)
-        button.backgroundColor = .blue
-        button.translatesAutoresizingMaskIntoConstraints = false
+    let logoutBtn: UIBarButtonItem = {
+        
+        let btn = UIButton(type: .custom)
+        
+        btn.setTitle("Log out", for: .normal)
+        btn.titleLabel?.font = UIFont.systemFont(ofSize: 8)
+       // btn.titleEdgeInsets = UIEdgeInsets.init(top: 2, left: 5, bottom: 2, right: 5)
+        
+        btn.layer.backgroundColor = UIColor.gray.cgColor
+        btn.layer.cornerRadius = 5
+        let button = UIBarButtonItem(customView: btn)
+        button.width = 150
+//        let button = UIButton(type: UIButtonType.custom)
+//        button.setTitle("Log out", for: .normal)
+//        button.frame = CGRect(x: 0, y: 0, width: 30, height: 20)
+//        button.backgroundColor = .gray
+//        button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
     
@@ -40,14 +46,13 @@ class ChatRoomViewController: UICollectionViewController, UICollectionViewDelega
     lazy var inputTextField: UITextField = {
         let textField = UITextField()
         textField.frame = CGRect(x: 0, y: 0, width: 100, height: 40)
-        textField.backgroundColor = .blue
-        textField.placeholder = "enter message..."
+        textField.placeholder = "Start a new message"
         textField.backgroundColor = .white
         textField.translatesAutoresizingMaskIntoConstraints = false
         textField.delegate = self
         return textField
     }()
-    
+        
 
     let passwordTextField: UITextField = {
         let textField = UITextField()
@@ -61,7 +66,7 @@ class ChatRoomViewController: UICollectionViewController, UICollectionViewDelega
     
     let safeAreaInsetCoverView: UIView = {
         let uiView = UIView()
-        uiView.backgroundColor = .blue
+        uiView.backgroundColor = .white
         uiView.translatesAutoresizingMaskIntoConstraints = false
         return uiView
     }()
@@ -73,22 +78,27 @@ class ChatRoomViewController: UICollectionViewController, UICollectionViewDelega
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
+        view.backgroundColor = .black
+        observeMessages()
         
         navigationItem.title = "Chat app"
-        navigationController?.setToolbarHidden(false, animated: false)
         navigationController?.navigationBar.isTranslucent = false
 
-
         
-        let rightBarButton = UIBarButtonItem(customView: logoutBtn)
-        navigationItem.rightBarButtonItems = [rightBarButton]
+        //let rightBarButton = UIBarButtonItem(customView: logoutBtn)
+        navigationItem.rightBarButtonItems = [logoutBtn]
         
         setupInputComponents()
         collectionView?.contentInset = UIEdgeInsets.init(top: 8, left: 0, bottom: 47.5, right: 0)
         collectionView?.alwaysBounceVertical = true
         collectionView?.backgroundColor = .white
         collectionView?.register(MessagesViewCell.self, forCellWithReuseIdentifier: cellId)
+        if #available(iOS 11.0, *) {
+            print("jmolas")
+            print(view.safeAreaInsets)
+        } else {
+            // Fallback on earlier versions
+        }
     
 
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardObserver), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
@@ -99,11 +109,14 @@ class ChatRoomViewController: UICollectionViewController, UICollectionViewDelega
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        navigationController?.setToolbarHidden(true, animated: false)
+        navigationItem.hidesBackButton = true
     }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
+        logoutBtn.width = 100
+        
+       
         
         if safeAreaBottomInset == nil {
             if #available(iOS 11.0, *) {
@@ -123,15 +136,19 @@ class ChatRoomViewController: UICollectionViewController, UICollectionViewDelega
         
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        observeMessages()
-    }
-    
+
     deinit {
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillShow, object: nil)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillHide, object: nil)
     }
     
+    
+    @objc func logoutUser(){
+        print("Log out")
+        if let navVC = navigationController as? MainNavigationController{
+            navVC.popToViewController(IndexViewController(), animated: true)
+        }
+    }
     @objc func keyboardObserver(noticifation: Notification) {
     
         if let userInfo = noticifation.userInfo {
@@ -139,7 +156,8 @@ class ChatRoomViewController: UICollectionViewController, UICollectionViewDelega
             
             let isKeyboardShowing = noticifation.name == NSNotification.Name.UIKeyboardWillShow
             
-            containerViewBottomAnchor?.constant = isKeyboardShowing ? (-keyboardFrame!.height + safeAreaBottomInset!) : 0
+            containerViewBottomAnchor?.constant = isKeyboardShowing ? (-keyboardFrame!.height) : 0
+            
             
             UIView.animate(withDuration: 0, delay: 0, options: .curveEaseOut, animations: {
                 self.view.layoutIfNeeded()
@@ -159,30 +177,31 @@ class ChatRoomViewController: UICollectionViewController, UICollectionViewDelega
     
     }
     
+    
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! MessagesViewCell
         
         let message = messages[indexPath.item]
-        cell.messageTextView.text = message.text
-        cell.userTextLabel.text = message.sender
-        let test = messages.count % 2
-        if  test == 0{
-            cell.chatBubbleRightAnchor?.isActive = true
-            cell.chatBubbleLeftAnchor?.isActive = false
-           // cell.messageTextView.backgroundColor = .black
-            cell.messageLeftViewAnchor?.constant = 0
-            cell.messageRightViewAnchor?.constant = -5
-           
-            cell.bubbleImageView.image = UIImage(named: "chat_bubble_user")?
-            .resizableImage(withCapInsets: UIEdgeInsets.init(top: 7, left: 13, bottom: 26, right: 13))
-        } else {
-            cell.chatBubbleRightAnchor?.isActive = false
-            cell.chatBubbleLeftAnchor?.isActive = true
-//            cell.bubbleImageView.image = UIImage(named: "chat_bubble")?
-//                .resizableImage(withCapInsets: UIEdgeInsets.init(top: 7, left: 13, bottom: 26, right: 13))
-        }
         
-        cell.chatBubbleWidthAnchor?.constant = estimatedFrameForText(text: message.text!).width + 32
+        
+        cell.messageTextView.text = message.text
+        if let msgTxt = messages[indexPath.item].text {
+            
+            if message.sender == self.user?.username!{
+                
+                cell.userTextLabel.text = "You"
+                cell.setIncomingMessages(text: msgTxt, deviceWidth: view.frame.width)
+             
+   
+            } else {
+                cell.userTextLabel.text = message.sender
+                cell.setOutgoingMessages(text: msgTxt, deviceWidth: view.frame.width)
+  
+
+            }
+    
+        }
+    
         return cell
     }
     
@@ -198,15 +217,16 @@ class ChatRoomViewController: UICollectionViewController, UICollectionViewDelega
         
         var height: CGFloat = 80
         if let text = messages[indexPath.item].text {
-            height = estimatedFrameForText(text: text).height + 40
+            height = estimatedFrameForText(text: text).height
         }
         
         // get estimated height
-        return CGSize(width: view.frame.width, height: height)
+        return CGSize(width: view.frame.width, height: height + 45)
     }
     
     private func estimatedFrameForText(text: String) -> CGRect{
-        let size = CGSize(width: 200, height: 1000)
+        
+        let size = CGSize(width: 250, height: 1000)
         let options = NSStringDrawingOptions.usesFontLeading.union(NSStringDrawingOptions.usesLineFragmentOrigin)
         return NSString(string: text).boundingRect(with: size,
                                                    options: options,
@@ -264,7 +284,8 @@ class ChatRoomViewController: UICollectionViewController, UICollectionViewDelega
         if inputTextField.text!.trimmingCharacters(in: .whitespacesAndNewlines).count != 0{
             let ref = Database.database().reference().child("messages")
             let childRef = ref.childByAutoId()
-            let values = ["text": inputTextField.text!, "sender": "midoriya"]
+            let sender = user?.username!
+            let values = ["text": inputTextField.text!, "sender": sender!]
             childRef.updateChildValues(values) { (error, ref) in
                 if error != nil{
                     return
@@ -294,7 +315,6 @@ class ChatRoomViewController: UICollectionViewController, UICollectionViewDelega
                 let msg = Message()
                 msg.sender = dictionary["sender"]
                 msg.text = dictionary["text"]
-                //msg.setValuesForKeys(dictionary)
                 
                self.messages.append(msg)
 

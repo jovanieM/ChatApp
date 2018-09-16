@@ -63,9 +63,7 @@ class BaseViewController: UIViewController {
     var signupLoginBtn: UIButton = {
         let button = UIButton(type: UIButtonType.custom)
         button.setBackgroundImage(UIImage(named: "green_btn_light"), for: .normal)
-        button.setTitle("Sign up", for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
- //       button.addTarget(self, action: #selector(presentChatRoomVC), for: .touchUpInside)
         return button
     }()
     
@@ -75,8 +73,6 @@ class BaseViewController: UIViewController {
       //  button.setAttributedTitle(title, for: .normal)
         let label = UILabel()
         label.textAlignment = .center
-        label.text = "Login"
-        label.backgroundColor = .green
     
         label.translatesAutoresizingMaskIntoConstraints = false
 //        button.addTarget(self, action: #selector(presentLoginVC), for: .touchUpInside)

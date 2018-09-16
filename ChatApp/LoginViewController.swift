@@ -16,7 +16,9 @@ class LoginViewController: BaseViewController {
         super.viewDidLoad()
         navigationItem.title = "Chat app"
         view.backgroundColor = .white
+        signupLoginBtn.setTitle("Login", for: .normal)
         signupLoginBtn.addTarget(self, action: #selector(validateLoginForm), for: .touchUpInside)
+        signuploginLink.text = "Sign up"
         
     }
     
@@ -34,9 +36,9 @@ class LoginViewController: BaseViewController {
         
         checkMembership(user: userInput, pass: passwordInput) { (isAuthorized) in
             if isAuthorized {
-                print("autorized memmber")
+                self.presentChatRoomVC(user: User(user: userInput, pass: ""))
             } else {
-                print("unauthorized")
+                self.displayError()
             }
         }
     }
@@ -76,6 +78,15 @@ class LoginViewController: BaseViewController {
             
         }
         print("returning")
+    }
+    func presentChatRoomVC(user: User){
+        
+        let collectionViewFlowLayout = UICollectionViewFlowLayout()
+        collectionViewFlowLayout.minimumLineSpacing = 20
+        let nav = self.navigationController as! MainNavigationController
+        let chatView = ChatRoomViewController(collectionViewLayout: collectionViewFlowLayout)
+        chatView.user = user
+        nav.pushViewController(chatView, animated: true)
     }
     
 
