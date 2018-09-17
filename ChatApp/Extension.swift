@@ -8,7 +8,7 @@
 
 import UIKit
 
-
+// MARK: - UITextField
 extension UITextField {
     func setLeftPaddingPoints (_ value: CGFloat){
         let paddingView = UIView(frame: CGRect(x: 0, y: 0, width: value, height: self.frame.height))
@@ -17,6 +17,7 @@ extension UITextField {
     }
 }
 
+// MARK: - UIColor
 extension UIColor {
     class var appColorDarkGray: UIColor {
         return UIColor(red: 102/255, green: 102/255, blue: 102/255, alpha: 1.0)
@@ -47,9 +48,8 @@ extension UIColor {
     }
 }
 
-
+// MARK: - UIView
 extension UIView {
-    
     
     var safeTopAnchor: NSLayoutYAxisAnchor {
         if #available(iOS 11.0, *) {

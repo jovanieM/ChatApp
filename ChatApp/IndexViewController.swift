@@ -10,6 +10,7 @@ import UIKit
 
 class IndexViewController: UIViewController {
 
+    // MARK: - Properties
     let appLogo: UIImageView = {
         let imageView: UIImageView = UIImageView()
         imageView.image = #imageLiteral(resourceName: "app_logo")
@@ -41,65 +42,55 @@ class IndexViewController: UIViewController {
         return button
     }()
     
+    
+    // MARK: - ViewController functions
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        print("view didload called again")
         view.backgroundColor = .white
-        
-        view.addSubview(appLogo)
         view.addSubview(signupBtn)
+        view.addSubview(appLogo)
         view.addSubview(loginBtn)
-        setupAppLogo()
         setupSignupBtn()
+        setupAppLogo()
         setupLoginBtn()
-        
     }
-
-    func setupAppLogo(){
-        //need x, y, width, height
-        let _width: CGFloat = view.bounds.width * ( 246 / 640)
-        
-        appLogo.anchor(top: view.topAnchor,
-                       leading: nil,
-                       bottom: nil,
-                       trailing: nil,
-                       centerX: view.centerXAnchor,
-                       centerY: nil,
-                       padding: .init(top: 276 * (568 / 1136), left: 0, bottom: 0, right: 0),
-                       size: CGSize.init(width: _width, height: 0))
     
-    }
-
+    // MARK: - Setup UI constraints functions
     func setupSignupBtn() {
-        //need x, y, width, height
+        // x, y, width, height
         let width: CGFloat = view.bounds.width * (603 / 640)
         signupBtn.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        signupBtn.topAnchor.constraint(equalTo: appLogo.bottomAnchor, constant: 81 * (568 / 1136)).isActive = true // (568 / 1136) = device points to pixel ratio
+        signupBtn.topAnchor.constraint(equalTo: view.centerYAnchor, constant: 10).isActive = true 
         signupBtn.widthAnchor.constraint(equalToConstant: width).isActive = true
+    }
+    
+    func setupAppLogo(){
+        // x, y, width, height
+        let _width: CGFloat = view.bounds.width * ( 246 / 640)
+        appLogo.bottomAnchor.constraint(equalTo: signupBtn.topAnchor, constant: -20).isActive = true
+        appLogo.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
+        appLogo.widthAnchor.constraint(equalToConstant: _width).isActive = true
+ 
     }
     
     func setupLoginBtn(){
         //need x, y, width, height
         loginBtn.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        loginBtn.topAnchor.constraint(equalTo: signupBtn.bottomAnchor, constant: 20 * (568 / 1136)).isActive = true
+        loginBtn.topAnchor.constraint(equalTo: signupBtn.bottomAnchor, constant: 20).isActive = true
         loginBtn.widthAnchor.constraint(equalTo: signupBtn.widthAnchor).isActive = true
     }
-    
+
+    // MARK: - Navigation
     @objc func presentSignupVC(){
-        let signupVC = SignupViewController()
-        let mainNav = self.navigationController as! MainNavigationController
-        mainNav.pushViewController(signupVC, animated: true)
+        
+        self.present(UINavigationController(rootViewController: SignupViewController()), animated: true, completion: nil)
     }
     
     @objc func presentLoginVC(){
-        let loginVC = LoginViewController()
-        let mainNav = self.navigationController as! MainNavigationController
-        mainNav.pushViewController(loginVC, animated: true)
-        
-    }
-    
-    deinit {
-        print("de init is called")
+       
+        self.present(UINavigationController(rootViewController: LoginViewController()), animated: true, completion: nil)
+
     }
     
 }

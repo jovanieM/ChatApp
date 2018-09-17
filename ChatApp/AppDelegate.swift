@@ -23,7 +23,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
 //        let collectionViewFlowLayout = UICollectionViewFlowLayout()
 //        collectionViewFlowLayout.minimumLineSpacing = 20
-        window?.rootViewController = MainNavigationController(rootViewController: IndexViewController())
+        window?.rootViewController = IndexViewController()
         
 
         return true

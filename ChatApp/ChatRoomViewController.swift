@@ -41,7 +41,6 @@ class ChatRoomViewController: UICollectionViewController, UICollectionViewDelega
         return button
     }()
     
-    
     lazy var inputTextField: UITextField = {
         let textField = UITextField()
         textField.attributedPlaceholder = NSAttributedString(string: "Start a new message",
@@ -57,7 +56,6 @@ class ChatRoomViewController: UICollectionViewController, UICollectionViewDelega
         return textField
     }()
     
-    
     let safeAreaInsetCoverView: UIView = {
         let uiView = UIView()
         uiView.backgroundColor = .white
@@ -72,13 +70,13 @@ class ChatRoomViewController: UICollectionViewController, UICollectionViewDelega
         return separatorline
     }()
     
-
+    // MARK: - Initialization
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
         observeMessages()
         navigationItem.title = "Chat app"
-        navigationController?.navigationBar.isOpaque = true
+        navigationController?.navigationBar.isTranslucent = false
         navigationItem.rightBarButtonItems = [logoutBtn]
         logoutBtn.customView?.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(logoutUser)))
         setupInputComponents()
@@ -97,7 +95,6 @@ class ChatRoomViewController: UICollectionViewController, UICollectionViewDelega
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        navigationItem.hidesBackButton = true
         let img = UIImage()
         self.navigationController?.navigationBar.shadowImage = img
         self.navigationController?.navigationBar.setBackgroundImage(img, for: UIBarMetrics.default)
@@ -124,37 +121,30 @@ class ChatRoomViewController: UICollectionViewController, UICollectionViewDelega
         
     }
     
-    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
-        self.collectionView?.collectionViewLayout.invalidateLayout()
-    }
-
     deinit {
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillShow, object: nil)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillHide, object: nil)
-        print("de init called")
     }
     
 
     @objc func logoutUser(){
-        print("Log out")
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillShow, object: nil)
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+    
         self.messagesRef.removeAllObservers()
-        if let navVC = navigationController as? MainNavigationController{
-            navVC.popToRootViewController(animated: true)
-        }
+        self.dismiss(animated: true, completion: nil)
+     
     }
     
-    @objc func keyboardObserver(noticifation: Notification) {
+    // adjust collection view contents when keyboard appears
+    @objc func keyboardObserver(notification: Notification) {
     
-        if let userInfo = noticifation.userInfo {
+        if let userInfo = notification.userInfo {
             let keyboardFrame = (userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue
             
-            let isKeyboardShowing = noticifation.name == NSNotification.Name.UIKeyboardWillShow
+            let isKeyboardShowing = notification.name == NSNotification.Name.UIKeyboardWillShow
             
             containerViewBottomAnchor?.constant = isKeyboardShowing ? (-keyboardFrame!.height) : 0
             
-            
+    
             UIView.animate(withDuration: 0, delay: 0, options: .curveEaseOut, animations: {
                 self.view.layoutIfNeeded()
             }) { (comleted) in
@@ -184,7 +174,8 @@ class ChatRoomViewController: UICollectionViewController, UICollectionViewDelega
     func setupInputComponents(){
 
         self.view.addSubview(navigationBarSeparatorLine)
-        //consttraints
+        
+        //constraints
         navigationBarSeparatorLine.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
         navigationBarSeparatorLine.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
         navigationBarSeparatorLine.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
@@ -198,21 +189,18 @@ class ChatRoomViewController: UICollectionViewController, UICollectionViewDelega
         containerView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
         containerView.heightAnchor.constraint(equalToConstant: 47.5).isActive = true
         
-        
         //send button
         let sendButton = UIButton(type: .custom)
         sendButton.setTitle("Send", for: .normal)
         sendButton.titleLabel?.font = UIFont.systemFont(ofSize: 14)
         sendButton.translatesAutoresizingMaskIntoConstraints = false
-        
-        // btn.titleEdgeInsets = UIEdgeInsets.init(top: 2, left: 5, bottom: 2, right: 5)
-        
         sendButton.layer.backgroundColor = UIColor.appColorDarkGray.cgColor
         sendButton.layer.cornerRadius = 5
         sendButton.layer.masksToBounds = true
    
         sendButton.addTarget(self, action: #selector(sendMessage), for: .touchUpInside)
         containerView.addSubview(sendButton)
+        
         //send button constraints
         sendButton.rightAnchor.constraint(equalTo: containerView.rightAnchor, constant: -8).isActive = true
         sendButton.centerYAnchor.constraint(equalTo: containerView.centerYAnchor).isActive = true
@@ -277,7 +265,6 @@ class ChatRoomViewController: UICollectionViewController, UICollectionViewDelega
                self.messages.append(msg)
 
                 DispatchQueue.main.async {
-                    print("messages count \(self.messages.count)")
                     self.collectionView?.reloadData()
                     self.collectionView?.scrollToItem(at: IndexPath(row: self.messages.count - 1, section: 0), at: .bottom, animated: true)
                 }
@@ -291,7 +278,7 @@ class ChatRoomViewController: UICollectionViewController, UICollectionViewDelega
 extension ChatRoomViewController{
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        
+        print("did select")
         if inputTextField.isEditing {
             inputTextField.endEditing(true) // removes keyboard on item click
         }
@@ -303,7 +290,6 @@ extension ChatRoomViewController{
         if let text = messages[indexPath.item].text {
             height = estimatedFrameForText(text: text).height
         }
-        
         // get estimated height
         return CGSize(width: view.frame.width, height: height + 45)
     }
@@ -327,12 +313,9 @@ extension ChatRoomViewController{
                 cell.userTextLabel.text = "You"
                 cell.setIncomingMessages(text: msgTxt, deviceWidth: view.frame.width)
                 
-                
             } else {
                 cell.userTextLabel.text = message.sender
-                cell.setOutgoingMessages(text: msgTxt, deviceWidth: view.frame.width)
-                
-                
+                cell.setOutgoingMessages(text: msgTxt, deviceWidth: view.frame.width)            
             }
             
         }

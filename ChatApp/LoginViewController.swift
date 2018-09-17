@@ -9,26 +9,23 @@
 import UIKit
 import FirebaseDatabase
 
-class LoginViewController: BaseViewController {
-
+class LoginViewController: BaseViewController, UITextFieldDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        userTextField.delegate = self
         navigationItem.title = "Chat app"
         view.backgroundColor = .white
         signupLoginBtn.setTitle("Login", for: .normal)
         signupLoginBtn.addTarget(self, action: #selector(validateLoginForm), for: .touchUpInside)
-        signuploginLink.text = "Sign up"
-        
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        navigationItem.hidesBackButton = true
+        signuploginLink.attributedText = NSAttributedString(string: "Sign up",
+                                                            attributes: [NSAttributedStringKey.foregroundColor: UIColor.appColorLightGray])
+        signuploginLink.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(pushSignupVC)))
         
     }
     
     @objc func validateLoginForm() {
+        userTextField.endEditing(true)
         let userInput = userTextField.text!
         let passwordInput = passwordTextField.text!
         
@@ -36,7 +33,7 @@ class LoginViewController: BaseViewController {
         
         checkMembership(user: userInput, pass: passwordInput) { (isAuthorized) in
             if isAuthorized {
-                self.presentChatRoomVC(user: User(user: userInput, pass: ""))
+                self.presentChatRoomVC(user: User(username: userInput, password: ""))
             } else {
                 self.displayError()
             }
@@ -57,13 +54,10 @@ class LoginViewController: BaseViewController {
                     
                     let _user = userdata["username"] as! String
                     let _pass = userdata["password"] as! String
-                    print("username \(_user)")
-                    print("username \(_pass)")
-                    print("username \(user)")
-                    print("username \(pass)")
-                    
+                                 
                     if (user == _user && pass == _pass){
                         isAuthorized = true
+                        print("success")
                         break
                     }
                 }
@@ -77,25 +71,50 @@ class LoginViewController: BaseViewController {
             print(error.localizedDescription)
             
         }
-        print("returning")
+        
     }
     func presentChatRoomVC(user: User){
+
+        if let vc = presentingViewController{
+            self.dismiss(animated: true, completion: nil)
+            let collectionViewFlowLayout = UICollectionViewFlowLayout()
+            collectionViewFlowLayout.minimumLineSpacing = 20
+            let chatroomVC = ChatRoomViewController(collectionViewLayout: collectionViewFlowLayout)
+            chatroomVC.user = user
+            vc.present(UINavigationController(rootViewController: chatroomVC), animated: true, completion: nil)
+        }
+    
         
-        let collectionViewFlowLayout = UICollectionViewFlowLayout()
-        collectionViewFlowLayout.minimumLineSpacing = 20
-        let nav = self.navigationController as! MainNavigationController
-        let chatView = ChatRoomViewController(collectionViewLayout: collectionViewFlowLayout)
-        chatView.user = user
-        nav.pushViewController(chatView, animated: true)
     }
     
+    @objc func pushSignupVC() {
+        if let vc = presentingViewController{
+            self.dismiss(animated: true, completion: nil)
+            vc.present(UINavigationController(rootViewController: SignupViewController()), animated: true, completion: nil)
+        }
 
-//
-//    @objc func presentSignupVC() {
-//        if let presentingVC = presentingViewController as? IndexViewController {
-//            self.dismiss(animated: true) {
-//                presentingVC.presentSignupVC()
-//            }
-//        }
-//    }
+    }
+    
+    // MARK: - UITextFieldDelegate functions
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        if textField.isEditing{
+            textField.endEditing(true)
+        }
+        return true
+    }
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        removeError()
+    }
+    
+    // restrict user from using special characters as username
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        if (userTextField.isEditing){
+            let charSet = NSCharacterSet(charactersIn: ACCEPTABLE_CHARACTERS).inverted
+            let filtered = string.components(separatedBy: charSet).joined(separator: "")
+            return (string == filtered)
+        }
+        return true
+    }
+
+
 }
