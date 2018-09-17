@@ -12,7 +12,7 @@ class IndexViewController: UIViewController {
 
     let appLogo: UIImageView = {
         let imageView: UIImageView = UIImageView()
-        imageView.image = UIImage(named: "app_logo")
+        imageView.image = #imageLiteral(resourceName: "app_logo")
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.contentMode = .scaleAspectFit
         return imageView
@@ -20,7 +20,10 @@ class IndexViewController: UIViewController {
     
     let signupBtn: UIButton = {
         let button = UIButton(type: UIButtonType.custom)
-        button.setBackgroundImage(UIImage(named: "green_btn_dark"), for: .normal)
+        let image = #imageLiteral(resourceName: "green_btn_dark").withRenderingMode(.alwaysTemplate)
+        
+        button.setBackgroundImage(image, for: .normal)
+        button.tintColor = UIColor.appColorDarkGreen
         button.setTitle("Sign up", for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.addTarget(self, action: #selector(presentSignupVC), for: .touchUpInside)
@@ -29,7 +32,9 @@ class IndexViewController: UIViewController {
     
     let loginBtn: UIButton = {
         let button = UIButton(type: UIButtonType.custom)
-        button.setBackgroundImage(UIImage(named: "green_btn_light"), for: .normal)
+        let image = #imageLiteral(resourceName: "green_btn_light").withRenderingMode(.alwaysTemplate)
+        button.setBackgroundImage(image, for: .normal)
+        button.tintColor = UIColor.appColorLightGreen
         button.setTitle("Login", for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.addTarget(self, action: #selector(presentLoginVC), for: .touchUpInside)
@@ -48,11 +53,6 @@ class IndexViewController: UIViewController {
         setupSignupBtn()
         setupLoginBtn()
         
-        print("signupbuttonFrame \(signupBtn.frame)")
-        print("signupbuttonFrame \(signupBtn.bounds)")
-        
-        
-        // Do any additional setup after loading the view.
     }
 
     func setupAppLogo(){

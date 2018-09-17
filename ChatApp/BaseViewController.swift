@@ -20,8 +20,9 @@ class BaseViewController: UIViewController {
         textField.autocorrectionType = .no
         textField.placeholder = "Username"
         textField.layer.cornerRadius = 5
+        textField.layer.masksToBounds = true
         textField.borderStyle = .none
-        textField.backgroundColor = UIColor(red: 245/255, green: 248/255, blue: 2250/255, alpha: 1.0)
+        textField.backgroundColor = UIColor.appColorAliceBlue
         textField.setLeftPaddingPoints(10)
         textField.translatesAutoresizingMaskIntoConstraints = false
        // textField.delegate = self
@@ -42,9 +43,9 @@ class BaseViewController: UIViewController {
         textField.autocorrectionType = .no
         textField.placeholder = "password"
         textField.layer.cornerRadius = 5
+        textField.layer.masksToBounds = true
         textField.borderStyle = .none
-        textField.backgroundColor = UIColor(red: 245/255, green: 248/255, blue: 2250/255, alpha: 1.0)
-        //textField.background = UIImage(named: "textfield_bg")?.withRenderingMode(.alwaysTemplate)
+        textField.backgroundColor = UIColor.appColorAliceBlue
         textField.setLeftPaddingPoints(10)
         textField.isSecureTextEntry = true
         textField.translatesAutoresizingMaskIntoConstraints = false
@@ -54,7 +55,6 @@ class BaseViewController: UIViewController {
     
     lazy var passwordInputErrorLabel: UILabel = {
         let label = UILabel()
-        //label.backgroundColor = .blue
         label.textColor = .red
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -62,7 +62,9 @@ class BaseViewController: UIViewController {
     
     var signupLoginBtn: UIButton = {
         let button = UIButton(type: UIButtonType.custom)
-        button.setBackgroundImage(UIImage(named: "green_btn_light"), for: .normal)
+        let image = #imageLiteral(resourceName: "green_btn_light").withRenderingMode(.alwaysTemplate)
+        button.setBackgroundImage(image, for: .normal)
+        button.tintColor = UIColor.appColorLightGreen
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()

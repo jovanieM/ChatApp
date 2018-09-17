@@ -16,6 +16,7 @@ class MessagesViewCell: UICollectionViewCell {
         textView.translatesAutoresizingMaskIntoConstraints = false
         textView.backgroundColor = .clear
         textView.textColor = .white
+        textView.isSelectable = false
         textView.isScrollEnabled = false
         textView.isEditable = false
         return textView
@@ -167,7 +168,7 @@ class MessagesViewCell: UICollectionViewCell {
     
     private func estimatedFrameForText(text: String) -> CGRect{
         
-        let size = CGSize(width: 250, height: 1000)
+        let size = CGSize(width: self.frame.width * 0.8, height: 1000)
         let options = NSStringDrawingOptions.usesFontLeading.union(NSStringDrawingOptions.usesLineFragmentOrigin)
         return NSString(string: text).boundingRect(with: size,
                                                    options: options,

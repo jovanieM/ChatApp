@@ -17,6 +17,36 @@ extension UITextField {
     }
 }
 
+extension UIColor {
+    class var appColorDarkGray: UIColor {
+        return UIColor(red: 102/255, green: 102/255, blue: 102/255, alpha: 1.0)
+    }
+    
+    class var appColorLightGray: UIColor {
+        return UIColor(red: 100/255, green: 119/255, blue: 135/255, alpha: 1.0)
+    }
+    
+    class var appColorAliceBlue: UIColor {
+        return UIColor(red: 245/255, green: 248/255, blue: 250/255, alpha: 1.0)
+    }
+    
+    class var appColorLightGreen: UIColor {
+        return UIColor(red: 136/255, green: 227/255, blue: 6/255, alpha: 1.0)
+    }
+    
+    class var appColorDarkGreen: UIColor {
+        return UIColor(red: 98/255, green: 163/255, blue: 4/255, alpha: 1.0)
+    }
+    
+    class var appColorTitleGray: UIColor {
+        return UIColor(red: 51/255, green: 51/255, blue: 51/255, alpha: 1.0)
+    }
+    
+    class var appColorLineGray: UIColor {
+        return UIColor(red: 204/255, green: 214/255, blue: 250/255, alpha: 1.0)
+    }
+}
+
 
 extension UIView {
     
