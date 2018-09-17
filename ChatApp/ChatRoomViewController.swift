@@ -14,6 +14,10 @@ class ChatRoomViewController: UICollectionViewController, UICollectionViewDelega
     
     var user: User?
     var messages = [Message]()
+    let cellId = "cellId"
+    var safeAreaBottomInset: CGFloat?
+    var containerViewBottomAnchor: NSLayoutConstraint?
+    let messagesRef = Database.database().reference()
     
     let containerView:UIView = {
         let uiView: UIView = UIView()
@@ -22,33 +26,27 @@ class ChatRoomViewController: UICollectionViewController, UICollectionViewDelega
         return uiView
     }()
     
-    
     let logoutBtn: UIBarButtonItem = {
         
         let btn = UIButton(type: .custom)
-        
         btn.setTitle("Log out", for: .normal)
         btn.titleLabel?.font = UIFont.systemFont(ofSize: 14)
         btn.translatesAutoresizingMaskIntoConstraints = false
         btn.transform = CGAffineTransform(translationX: 10, y: 0)
-        
         btn.layer.backgroundColor = UIColor.appColorDarkGray.cgColor
         btn.layer.cornerRadius = 5
         btn.layer.masksToBounds = true
         let button = UIBarButtonItem(customView: btn)
         button.width = 63
-//        let button = UIButton(type: UIButtonType.custom)
-//        button.setTitle("Log out", for: .normal)
-//        button.frame = CGRect(x: 0, y: 0, width: 30, height: 20)
-//        button.backgroundColor = .gray
-//        button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
     
     
     lazy var inputTextField: UITextField = {
         let textField = UITextField()
-        textField.placeholder = "Start a new message"
+        textField.attributedPlaceholder = NSAttributedString(string: "Start a new message",
+                                                             attributes: [NSAttributedStringKey.foregroundColor: UIColor.appColorLightGray,
+                                                                          NSAttributedStringKey.font: UIFont.systemFont(ofSize: 14)])
         textField.borderStyle = .none
         textField.layer.cornerRadius = 5
         textField.layer.masksToBounds = true
@@ -74,22 +72,17 @@ class ChatRoomViewController: UICollectionViewController, UICollectionViewDelega
         return separatorline
     }()
     
-    let cellId = "cellId"
-    
-    var safeAreaBottomInset: CGFloat?
-    var containerViewBottomAnchor: NSLayoutConstraint?
 
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
         observeMessages()
-        
         navigationItem.title = "Chat app"
-        navigationController?.navigationBar.isTranslucent = false
-
+        navigationController?.navigationBar.isOpaque = true
         navigationItem.rightBarButtonItems = [logoutBtn]
-        
+        logoutBtn.customView?.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(logoutUser)))
         setupInputComponents()
+        
         collectionView?.contentInset = UIEdgeInsets.init(top: 8, left: 0, bottom: 47.5, right: 0)
         collectionView?.alwaysBounceVertical = true
         collectionView?.backgroundColor = .white
@@ -138,11 +131,15 @@ class ChatRoomViewController: UICollectionViewController, UICollectionViewDelega
     deinit {
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillShow, object: nil)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+        print("de init called")
     }
     
 
     @objc func logoutUser(){
         print("Log out")
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+        self.messagesRef.removeAllObservers()
         if let navVC = navigationController as? MainNavigationController{
             navVC.popToRootViewController(animated: true)
         }
@@ -173,57 +170,6 @@ class ChatRoomViewController: UICollectionViewController, UICollectionViewDelega
         
     }
     
-    override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return messages.count
-    
-    }
-    
-    
-    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! MessagesViewCell
-        
-        let message = messages[indexPath.item]
-        
-        
-        cell.messageTextView.text = message.text
-        if let msgTxt = messages[indexPath.item].text {
-            
-            if message.sender == self.user?.username!{
-                
-                cell.userTextLabel.text = "You"
-                cell.setIncomingMessages(text: msgTxt, deviceWidth: view.frame.width)
-             
-   
-            } else {
-                cell.userTextLabel.text = message.sender
-                cell.setOutgoingMessages(text: msgTxt, deviceWidth: view.frame.width)
-  
-
-            }
-    
-        }
-    
-        return cell
-    }
-    
-    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        
-        if inputTextField.isEditing {
-            inputTextField.endEditing(true) // removes keyboard on item click
-        }
-    }
-    
-    // collectionViewlayout
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        
-        var height: CGFloat = 80
-        if let text = messages[indexPath.item].text {
-            height = estimatedFrameForText(text: text).height
-        }
-        
-        // get estimated height
-        return CGSize(width: view.frame.width, height: height + 45)
-    }
     
     private func estimatedFrameForText(text: String) -> CGRect{
         
@@ -318,12 +264,10 @@ class ChatRoomViewController: UICollectionViewController, UICollectionViewDelega
         return true
     }
     
-    func observeMessages() {
-        let ref = Database.database().reference().child("messages")
-        ref.observe(.childAdded, with: { (snapshot) in
-           // let val = snapshot.value
-
+    private func observeMessages() {
         
+        messagesRef.child("messages").observe(.childAdded, with: { (snapshot) in
+    
             if let dictionary = snapshot.value as? [String: String] {
                 print("\(dictionary.debugDescription)")
                 var msg = Message()
@@ -340,5 +284,59 @@ class ChatRoomViewController: UICollectionViewController, UICollectionViewDelega
 
             }
         }, withCancel: nil)
+    }
+}
+
+
+extension ChatRoomViewController{
+    
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
+        if inputTextField.isEditing {
+            inputTextField.endEditing(true) // removes keyboard on item click
+        }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        
+        var height: CGFloat = 80
+        if let text = messages[indexPath.item].text {
+            height = estimatedFrameForText(text: text).height
+        }
+        
+        // get estimated height
+        return CGSize(width: view.frame.width, height: height + 45)
+    }
+    
+    override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return messages.count
+        
+    }
+    
+    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! MessagesViewCell
+        
+        let message = messages[indexPath.item]
+        
+        
+        cell.messageTextView.text = message.text
+        if let msgTxt = messages[indexPath.item].text {
+            
+            if message.sender == self.user?.username!{
+                
+                cell.userTextLabel.text = "You"
+                cell.setIncomingMessages(text: msgTxt, deviceWidth: view.frame.width)
+                
+                
+            } else {
+                cell.userTextLabel.text = message.sender
+                cell.setOutgoingMessages(text: msgTxt, deviceWidth: view.frame.width)
+                
+                
+            }
+            
+        }
+        
+        return cell
     }
 }

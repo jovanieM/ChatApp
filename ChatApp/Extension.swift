@@ -50,6 +50,7 @@ extension UIColor {
 
 extension UIView {
     
+    
     var safeTopAnchor: NSLayoutYAxisAnchor {
         if #available(iOS 11.0, *) {
             return safeAreaLayoutGuide.topAnchor

@@ -18,14 +18,13 @@ class BaseViewController: UIViewController {
         let textField = UITextField()
         textField.autocapitalizationType = .none
         textField.autocorrectionType = .no
-        textField.placeholder = "Username"
+        textField.attributedPlaceholder = NSAttributedString(string: "Username", attributes: [NSAttributedStringKey.foregroundColor: UIColor.appColorLightGray])
         textField.layer.cornerRadius = 5
         textField.layer.masksToBounds = true
         textField.borderStyle = .none
         textField.backgroundColor = UIColor.appColorAliceBlue
         textField.setLeftPaddingPoints(10)
         textField.translatesAutoresizingMaskIntoConstraints = false
-       // textField.delegate = self
         return textField
     }()
     
@@ -41,7 +40,7 @@ class BaseViewController: UIViewController {
         let textField = UITextField()
         textField.autocapitalizationType = .none
         textField.autocorrectionType = .no
-        textField.placeholder = "password"
+        textField.attributedPlaceholder = NSAttributedString(string: "password", attributes: [NSAttributedStringKey.foregroundColor: UIColor.appColorLightGray])
         textField.layer.cornerRadius = 5
         textField.layer.masksToBounds = true
         textField.borderStyle = .none
