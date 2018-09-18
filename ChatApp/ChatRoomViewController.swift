@@ -158,7 +158,6 @@ class ChatRoomViewController: UICollectionViewController, UICollectionViewDelega
     private func estimatedFrameForText(text: String) -> CGRect{
         
         let size = CGSize(width: view.frame.width * 0.8, height: 1000)
-        print("vc \(size.width)")
         let options = NSStringDrawingOptions.usesFontLeading.union(NSStringDrawingOptions.usesLineFragmentOrigin)
         return NSString(string: text).boundingRect(with: size,
                                                    options: options,
@@ -259,6 +258,7 @@ class ChatRoomViewController: UICollectionViewController, UICollectionViewDelega
                self.messages.append(msg)
 
                 DispatchQueue.main.async {
+                    guard self.messages.count > 0 else {return}
                     self.collectionView?.reloadData()
                     self.collectionView?.scrollToItem(at: IndexPath(row: self.messages.count - 1, section: 0), at: .bottom, animated: true)
                 }

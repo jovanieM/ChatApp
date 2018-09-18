@@ -115,7 +115,6 @@ class MessagesViewCell: UICollectionViewCell {
     private func estimatedFrameForText(text: String) -> CGRect{
         
         let size = CGSize(width: self.frame.width * 0.8, height: 1000)
-        print("cell \(size.width)")
         let options = NSStringDrawingOptions.usesFontLeading.union(NSStringDrawingOptions.usesLineFragmentOrigin)
         return NSString(string: text).boundingRect(with: size,
                                                    options: options,
