@@ -43,7 +43,7 @@ class LoginViewController: BaseViewController, UITextFieldDelegate {
     
         var isAuthorized: Bool = false
         
-        let ref = Database.database().reference().child("users")
+        let ref = Database.database().reference().child(Constants.USERS_PATH.rawValue)
         ref.observeSingleEvent(of: .value, with: { (snapshot) in
             if let dictionary = snapshot.value as? [String: AnyObject] {
                 
@@ -51,8 +51,8 @@ class LoginViewController: BaseViewController, UITextFieldDelegate {
                 
                 for userdata in dictionary.values{
                     
-                    let _user = userdata["username"] as! String
-                    let _pass = userdata["password"] as! String
+                    let _user = userdata[Constants.USERNAME_KEY.rawValue] as! String
+                    let _pass = userdata[Constants.PASSWORD_KEY.rawValue] as! String
                                  
                     if (user == _user && pass == _pass){
                         isAuthorized = true

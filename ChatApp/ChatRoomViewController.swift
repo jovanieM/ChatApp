@@ -226,10 +226,10 @@ class ChatRoomViewController: UICollectionViewController, UICollectionViewDelega
     @objc func sendMessage(){
         
         if inputTextField.text!.trimmingCharacters(in: .whitespacesAndNewlines).count != 0{
-            let ref = Database.database().reference().child("messages")
+            let ref = Database.database().reference().child(Constants.MESSAGES_PATH.rawValue)
             let childRef = ref.childByAutoId()
             let sender = user?.username!
-            let values = ["text": inputTextField.text!, "sender": sender!]
+            let values = [Constants.TEXT_KEY.rawValue: inputTextField.text!, Constants.SENDER_KEY.rawValue: sender!]
             childRef.updateChildValues(values) { (error, ref) in
                 if error != nil{
                     return
@@ -247,13 +247,13 @@ class ChatRoomViewController: UICollectionViewController, UICollectionViewDelega
     
     private func observeMessages() {
         
-        messagesRef.child("messages").observe(.childAdded, with: { (snapshot) in
+        messagesRef.child(Constants.MESSAGES_PATH.rawValue).observe(.childAdded, with: { (snapshot) in
     
             if let dictionary = snapshot.value as? [String: String] {
                 print("\(dictionary.debugDescription)")
                 var msg = Message()
-                msg.sender = dictionary["sender"]
-                msg.text = dictionary["text"]
+                msg.sender = dictionary[Constants.SENDER_KEY.rawValue]
+                msg.text = dictionary[Constants.TEXT_KEY.rawValue]
                 
                self.messages.append(msg)
 
@@ -271,7 +271,7 @@ class ChatRoomViewController: UICollectionViewController, UICollectionViewDelega
 extension ChatRoomViewController{
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        print("did select")
+
         if inputTextField.isEditing {
             inputTextField.endEditing(true) // removes keyboard on item click
         }

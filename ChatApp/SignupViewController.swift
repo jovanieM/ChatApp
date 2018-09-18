@@ -63,13 +63,13 @@ class SignupViewController: BaseViewController, UITextFieldDelegate {
     func isUsernameAvailable(username: String, completion: @escaping (Bool) ->())  {
         var isAvailable: Bool = true
         var usernames = [String]()
-        let ref = Database.database().reference().child("users")
+        let ref = Database.database().reference().child(Constants.USERS_PATH.rawValue)
         ref.observeSingleEvent(of: .value, with: { (snapshot) in
             if let dictionary = snapshot.value as? [String: AnyObject] {
                 
                 for user in dictionary.values{
                     
-                        let _user = user["username"] as! String
+                        let _user = user[Constants.USERNAME_KEY.rawValue] as! String
                         if !usernames.contains(username){
                             usernames.append(_user)
                             print(_user)
@@ -91,10 +91,10 @@ class SignupViewController: BaseViewController, UITextFieldDelegate {
     
     func signupUser(user: String, pass: String, completion: @escaping ()->()){
        
-        let ref = Database.database().reference().child("users").childByAutoId()
+        let ref = Database.database().reference().child(Constants.USERS_PATH.rawValue).childByAutoId()
         
         var dictionary = [String: Any]()
-        dictionary = ["username": user, "password": pass] as [String : Any]
+        dictionary = [Constants.USERNAME_KEY.rawValue: user, Constants.PASSWORD_KEY.rawValue: pass] as [String : Any]
         
         ref.updateChildValues(dictionary) { (error, ref) in
             if error != nil{
