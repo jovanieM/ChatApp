@@ -15,7 +15,7 @@ class IndexViewController: UIViewController {
         let imageView: UIImageView = UIImageView()
         imageView.image = #imageLiteral(resourceName: "app_logo")
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.contentMode = .scaleAspectFit
+        imageView.contentMode = .scaleAspectFill
         return imageView
     }()
     
@@ -68,7 +68,7 @@ class IndexViewController: UIViewController {
     func setupAppLogo(){
         // x, y, width, height
         let _width: CGFloat = view.bounds.width * ( 246 / 640)
-        appLogo.bottomAnchor.constraint(equalTo: signupBtn.topAnchor, constant: -20).isActive = true
+        appLogo.bottomAnchor.constraint(equalTo: signupBtn.topAnchor, constant: -30).isActive = true
         appLogo.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
         appLogo.widthAnchor.constraint(equalToConstant: _width).isActive = true
  
@@ -77,7 +77,7 @@ class IndexViewController: UIViewController {
     func setupLoginBtn(){
         //need x, y, width, height
         loginBtn.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        loginBtn.topAnchor.constraint(equalTo: signupBtn.bottomAnchor, constant: 20).isActive = true
+        loginBtn.topAnchor.constraint(equalTo: signupBtn.bottomAnchor, constant: 10).isActive = true
         loginBtn.widthAnchor.constraint(equalTo: signupBtn.widthAnchor).isActive = true
     }
 
