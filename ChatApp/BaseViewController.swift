@@ -152,14 +152,14 @@ class BaseViewController: UIViewController {
         //need x, y, width, height
         let width: CGFloat = view.bounds.width * (603 / 640)
         let constraints: [NSLayoutConstraint] = [userTextField.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-                                                 userTextField.topAnchor.constraint(equalTo: view.topAnchor, constant: 30), //158 * (568 / 1136) + UIApplication.shared.statusBarFrame.height
+                                                 userTextField.topAnchor.constraint(equalTo: view.topAnchor, constant: 30),
                                                  userTextField.widthAnchor.constraint(equalToConstant: width),
-                                                 userTextField.heightAnchor.constraint(equalToConstant: 40)]//79 *  (568 / 1136))]
+                                                 userTextField.heightAnchor.constraint(equalToConstant: 40)]
         NSLayoutConstraint.activate(constraints)
     }
     
     func setupUserInputErrorLabel() {
-        let constraints: [NSLayoutConstraint] = [userInputErrorLabel.leftAnchor.constraint(equalTo: userTextField.leftAnchor),
+        let constraints: [NSLayoutConstraint] = [userInputErrorLabel.leftAnchor.constraint(equalTo: userTextField.leftAnchor, constant: 10),
                                                  userInputErrorLabel.topAnchor.constraint(equalTo: userTextField.bottomAnchor, constant: 5),
                                                  userInputErrorLabel.widthAnchor.constraint(equalTo: userTextField.widthAnchor)]
         NSLayoutConstraint.activate(constraints)
@@ -176,7 +176,7 @@ class BaseViewController: UIViewController {
     
     func setupPassInputErrorLabel() {
         let constraint: [NSLayoutConstraint] = [passwordInputErrorLabel.topAnchor.constraint(equalTo: passwordTextField.bottomAnchor, constant: 5),
-                                                passwordInputErrorLabel.leftAnchor.constraint(equalTo: passwordTextField.leftAnchor),
+                                                passwordInputErrorLabel.leftAnchor.constraint(equalTo: passwordTextField.leftAnchor, constant: 10),
                                                 passwordInputErrorLabel.widthAnchor.constraint(equalTo: passwordTextField.widthAnchor),
                                                 passwordInputErrorLabel.heightAnchor.constraint(equalTo: userInputErrorLabel.heightAnchor)]
         NSLayoutConstraint.activate(constraint)
@@ -192,7 +192,7 @@ class BaseViewController: UIViewController {
     
     func setupLoginLink() {
         let constraints: [NSLayoutConstraint] = [signuploginLink.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-                                                 signuploginLink.topAnchor.constraint(equalTo: signupLoginBtn.bottomAnchor, constant: 20 * (568 / 1136))]
+                                                 signuploginLink.topAnchor.constraint(equalTo: signupLoginBtn.bottomAnchor, constant: 10)]
         NSLayoutConstraint.activate(constraints)
     }
     
