@@ -152,7 +152,7 @@ class BaseViewController: UIViewController {
         //need x, y, width, height
         let width: CGFloat = view.bounds.width * (603 / 640)
         let constraints: [NSLayoutConstraint] = [userTextField.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-                                                 userTextField.topAnchor.constraint(equalTo: view.topAnchor, constant: 30 + 44 + UIApplication.shared.statusBarFrame.height), //158 * (568 / 1136) + UIApplication.shared.statusBarFrame.height
+                                                 userTextField.topAnchor.constraint(equalTo: view.topAnchor, constant: 30), //158 * (568 / 1136) + UIApplication.shared.statusBarFrame.height
                                                  userTextField.widthAnchor.constraint(equalToConstant: width),
                                                  userTextField.heightAnchor.constraint(equalToConstant: 40)]//79 *  (568 / 1136))]
         NSLayoutConstraint.activate(constraints)
