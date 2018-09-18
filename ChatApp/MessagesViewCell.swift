@@ -89,7 +89,8 @@ class MessagesViewCell: UICollectionViewCell {
         
     }
     func setIncomingMessages(text: String, deviceWidth: CGFloat){
-        let _frame = CGRect(x: 0, y: 0, width: estimatedFrameForText(text: text).width + 12, height: estimatedFrameForText(text: text).height + 20)
+        let _frame = CGRect(x: 0, y: 0, width: estimatedFrameForText(text: text).width + 16, height: estimatedFrameForText(text: text).height + 20)
+        
         messageTextView.frame = CGRect(x: deviceWidth - _frame.width - 13,
                                        y: 0,
                                        width: _frame.width,
@@ -114,6 +115,7 @@ class MessagesViewCell: UICollectionViewCell {
     private func estimatedFrameForText(text: String) -> CGRect{
         
         let size = CGSize(width: self.frame.width * 0.8, height: 1000)
+        print("cell \(size.width)")
         let options = NSStringDrawingOptions.usesFontLeading.union(NSStringDrawingOptions.usesLineFragmentOrigin)
         return NSString(string: text).boundingRect(with: size,
                                                    options: options,

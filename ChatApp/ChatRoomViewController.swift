@@ -158,6 +158,7 @@ class ChatRoomViewController: UICollectionViewController, UICollectionViewDelega
     private func estimatedFrameForText(text: String) -> CGRect{
         
         let size = CGSize(width: view.frame.width * 0.8, height: 1000)
+        print("vc \(size.width)")
         let options = NSStringDrawingOptions.usesFontLeading.union(NSStringDrawingOptions.usesLineFragmentOrigin)
         return NSString(string: text).boundingRect(with: size,
                                                    options: options,
