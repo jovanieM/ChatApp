@@ -29,7 +29,6 @@ class SignupViewController: BaseViewController, UITextFieldDelegate {
         signuploginLink.attributedText = NSAttributedString(string: "Login",
                            attributes: [NSAttributedStringKey.foregroundColor: UIColor.appColorLightGray])
         signuploginLink.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(pushLoginVC)))
-
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -88,8 +87,6 @@ class SignupViewController: BaseViewController, UITextFieldDelegate {
         }) { (error) in
             print(error.localizedDescription)
         }
-
-    
     }
     
     func signupUser(user: String, pass: String, completion: @escaping ()->()){
@@ -105,7 +102,6 @@ class SignupViewController: BaseViewController, UITextFieldDelegate {
             }
             completion()
         }
-        
     }
 
     @objc func pushLoginVC() {
@@ -115,7 +111,6 @@ class SignupViewController: BaseViewController, UITextFieldDelegate {
             
             vc.present(UINavigationController(rootViewController: LoginViewController()), animated: true, completion: nil)
         }
-
     }
 
     

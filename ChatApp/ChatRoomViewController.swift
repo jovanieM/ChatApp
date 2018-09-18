@@ -86,11 +86,8 @@ class ChatRoomViewController: UICollectionViewController, UICollectionViewDelega
         collectionView?.backgroundColor = .white
         collectionView?.register(MessagesViewCell.self, forCellWithReuseIdentifier: cellId)
      
-
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardObserver), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardObserver), name: NSNotification.Name.UIKeyboardWillShow,object: nil)
-        //NotificationCenter.default.addObserver(self, selector: #selector(keyboardObserver), name: NSNotification.Name.UIKeyboardWillChangeFrame, object: nil)
-        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -105,7 +102,6 @@ class ChatRoomViewController: UICollectionViewController, UICollectionViewDelega
     
         if safeAreaBottomInset == nil {
             if #available(iOS 11.0, *) {
-                print("safeAreaInsets \(view.safeAreaInsets)")
                 view.addSubview(safeAreaInsetCoverView)
                 safeAreaBottomInset = view.safeAreaInsets.bottom
                 safeAreaInsetCoverView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
@@ -118,7 +114,6 @@ class ChatRoomViewController: UICollectionViewController, UICollectionViewDelega
                 safeAreaBottomInset = 0
             }
         }
-        
     }
     
     deinit {
@@ -157,7 +152,6 @@ class ChatRoomViewController: UICollectionViewController, UICollectionViewDelega
                 }
             }
         }
-        
     }
     
     
@@ -244,7 +238,6 @@ class ChatRoomViewController: UICollectionViewController, UICollectionViewDelega
                 self.inputTextField.endEditing(true)
             }
         }
-        
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
@@ -274,7 +267,7 @@ class ChatRoomViewController: UICollectionViewController, UICollectionViewDelega
     }
 }
 
-
+// MARK: - Extension
 extension ChatRoomViewController{
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {

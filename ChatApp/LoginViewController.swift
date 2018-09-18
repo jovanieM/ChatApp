@@ -21,7 +21,6 @@ class LoginViewController: BaseViewController, UITextFieldDelegate {
         signuploginLink.attributedText = NSAttributedString(string: "Sign up",
                                                             attributes: [NSAttributedStringKey.foregroundColor: UIColor.appColorLightGray])
         signuploginLink.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(pushSignupVC)))
-        
     }
     
     @objc func validateLoginForm() {
@@ -67,12 +66,11 @@ class LoginViewController: BaseViewController, UITextFieldDelegate {
             
         }) { (error) in
             
-            
             print(error.localizedDescription)
             
         }
-        
     }
+    
     func presentChatRoomVC(user: User){
 
         if let vc = presentingViewController{
@@ -83,8 +81,6 @@ class LoginViewController: BaseViewController, UITextFieldDelegate {
             chatroomVC.user = user
             vc.present(UINavigationController(rootViewController: chatroomVC), animated: true, completion: nil)
         }
-    
-        
     }
     
     @objc func pushSignupVC() {
@@ -92,7 +88,6 @@ class LoginViewController: BaseViewController, UITextFieldDelegate {
             self.dismiss(animated: true, completion: nil)
             vc.present(UINavigationController(rootViewController: SignupViewController()), animated: true, completion: nil)
         }
-
     }
     
     // MARK: - UITextFieldDelegate functions
@@ -115,6 +110,4 @@ class LoginViewController: BaseViewController, UITextFieldDelegate {
         }
         return true
     }
-
-
 }
