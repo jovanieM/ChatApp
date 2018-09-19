@@ -24,7 +24,9 @@ class LoginViewController: BaseViewController, UITextFieldDelegate {
     }
     
     @objc func validateLoginForm() {
-        userTextField.endEditing(true)
+        
+        if userTextField.isEditing { userTextField.resignFirstResponder() }
+        if passwordTextField.isEditing { passwordTextField.resignFirstResponder() }
         let userInput = userTextField.text!
         let passwordInput = passwordTextField.text!
         

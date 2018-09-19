@@ -123,10 +123,11 @@ class ChatRoomViewController: UICollectionViewController, UICollectionViewDelega
     
 
     @objc func logoutUser(){
-    
+        if inputTextField.isEditing{
+            inputTextField.resignFirstResponder()
+        }
         self.messagesRef.removeAllObservers()
         self.dismiss(animated: true, completion: nil)
-     
     }
     
     // adjust collection view contents when keyboard appears
