@@ -74,12 +74,12 @@ class ChatRoomViewController: UICollectionViewController, UICollectionViewDelega
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
-        observeMessages()
         navigationItem.title = "Chat app"
         navigationController?.navigationBar.isTranslucent = false
         navigationItem.rightBarButtonItems = [logoutBtn]
         logoutBtn.customView?.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(logoutUser)))
         setupInputComponents()
+        observeMessages()
         
         collectionView?.contentInset = UIEdgeInsets.init(top: 8, left: 0, bottom: 47.5, right: 0)
         collectionView?.alwaysBounceVertical = true

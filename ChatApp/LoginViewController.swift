@@ -27,6 +27,7 @@ class LoginViewController: BaseViewController, UITextFieldDelegate {
         
         if userTextField.isEditing { userTextField.resignFirstResponder() }
         if passwordTextField.isEditing { passwordTextField.resignFirstResponder() }
+        
         let userInput = userTextField.text!
         let passwordInput = passwordTextField.text!
         
@@ -86,6 +87,10 @@ class LoginViewController: BaseViewController, UITextFieldDelegate {
     }
     
     @objc func pushSignupVC() {
+        
+        if userTextField.isEditing { userTextField.resignFirstResponder() }
+        if passwordTextField.isEditing { passwordTextField.resignFirstResponder() }
+        
         if let vc = presentingViewController{
             self.dismiss(animated: true, completion: nil)
             vc.present(UINavigationController(rootViewController: SignupViewController()), animated: true, completion: nil)

@@ -212,14 +212,11 @@ class BaseViewController: UIViewController {
     }
     
     func setupUserAgreementLabel() {
-        userAgreementLabel.anchor(top: signuploginLink.bottomAnchor,
-                                  leading: nil,
-                                  bottom: nil,
-                                  trailing: nil,
-                                  centerX: view.centerXAnchor,
-                                  centerY: nil,
-                                  padding: UIEdgeInsets.init(top: 10, left: 0, bottom: 0, right: 0),
-                                  size: CGSize.init(width: view.bounds.width * (603 / 640), height: 0))
+        let constraints: [NSLayoutConstraint] = [userAgreementLabel.topAnchor.constraint(equalTo: signupLoginBtn.bottomAnchor, constant: 10),
+                                                 userAgreementLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+                                                 userAgreementLabel.widthAnchor.constraint(equalToConstant: view.bounds.width * (603/640))]
+
+        NSLayoutConstraint.activate(constraints)
     }
 
     // Displays error message when the user does not comply the required paramater

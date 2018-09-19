@@ -10,12 +10,6 @@ import UIKit
 import FirebaseDatabase
 import Firebase
 
-enum LoginSignUpError: Error{
-    case IncompleteForm
-    case IncorrectInputLength
-    case IncorrectNameOrPassword
-}
-
 class SignupViewController: BaseViewController, UITextFieldDelegate {
     
     // MARK: - ViewController
@@ -41,6 +35,7 @@ class SignupViewController: BaseViewController, UITextFieldDelegate {
         
         if userTextField.isEditing { userTextField.resignFirstResponder() }
         if passwordTextField.isEditing { passwordTextField.resignFirstResponder() }
+        
         let userInput = userTextField.text!
         let passwordInput = passwordTextField.text!
         
@@ -107,6 +102,9 @@ class SignupViewController: BaseViewController, UITextFieldDelegate {
     }
 
     @objc func pushLoginVC() {
+        
+        if userTextField.isEditing { userTextField.resignFirstResponder() }
+        if passwordTextField.isEditing { passwordTextField.resignFirstResponder() }
 
         if let vc = presentingViewController{
             self.dismiss(animated: true, completion: nil)
